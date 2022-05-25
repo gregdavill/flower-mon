@@ -2069,7 +2069,7 @@
   (symbol (lib_id "Device:C") (at 242.57 137.16 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 1078c351-8d03-4a20-b476-db003f88e220)
-    (property "Reference" "C?" (id 0) (at 246.38 135.8899 0)
+    (property "Reference" "C6" (id 0) (at 246.38 135.8899 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (id 1) (at 246.38 138.4299 0)
@@ -2088,7 +2088,7 @@
   (symbol (lib_id "Graphic:Logo_Open_Hardware_Small") (at 276.86 175.26 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 13f92a83-1550-43ad-ac23-b0e99ea3e589)
-    (property "Reference" "#LOGO?" (id 0) (at 276.86 168.275 0)
+    (property "Reference" "#LOGO1" (id 0) (at 276.86 168.275 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "Logo_Open_Hardware_Small" (id 1) (at 276.86 180.975 0)
@@ -2567,8 +2567,8 @@
     )
     (pin "1" (uuid 1a91996b-fa54-46c5-b977-4da2d339645a))
     (pin "2" (uuid fe9de86c-3de7-4155-b152-03a7a19991d6))
-    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68a))
-    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68a))
+    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68b))
+    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68b))
     (pin "4" (uuid ad9c6fdd-a14e-421a-b313-51e2ab0bdf72))
     (pin "5" (uuid d8623b90-5df2-4e9b-90e7-62c11b30e5ed))
     (pin "6" (uuid fb34b607-6107-4290-807b-4f14299be431))
@@ -2799,7 +2799,7 @@
 
   (symbol_instances
     (path "/13f92a83-1550-43ad-ac23-b0e99ea3e589"
-      (reference "#LOGO?") (unit 1) (value "Logo_Open_Hardware_Small") (footprint "")
+      (reference "#LOGO1") (unit 1) (value "Logo_Open_Hardware_Small") (footprint "")
     )
     (path "/2f47706e-deb1-47a3-ad7d-bf0831227ea1"
       (reference "#PWR0101") (unit 1) (value "GND") (footprint "")
@@ -2871,7 +2871,7 @@
       (reference "C5") (unit 1) (value "0.75pF") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
     (path "/1078c351-8d03-4a20-b476-db003f88e220"
-      (reference "C?") (unit 1) (value "100nF") (footprint "Capacitor_SMD:C_0402_1005Metric")
+      (reference "C6") (unit 1) (value "100nF") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
     (path "/fd96ccba-4af7-423d-a91a-5897f7f71caa"
       (reference "D1") (unit 1) (value "green") (footprint "LED_SMD:LED_0603_1608Metric")
