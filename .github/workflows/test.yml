@@ -12,11 +12,14 @@ jobs:
 
     - shell: cmd
       run: |
-        C:\msys64\usr\bin\wget.exe "http://netstorage.iar.com/SuppDB/Protected/PRODUPD/013455/EW8051-10301-Autorun.exe"
+        C:\msys64\usr\bin\wget.exe -q "http://netstorage.iar.com/SuppDB/Protected/PRODUPD/013455/EW8051-10301-Autorun.exe"
         7z x -y -o"EW8051-10301-Autorun" "EW8051-10301-Autorun.exe"
         cd "EW8051-10301-Autorun\ew"
         start /WAIT setup.exe /w /s /a /s /f1"D:\a\flower-mon\flower-mon\ci\ew.iss"  || exit /b
-        D:\ew\common\bin\IarBuild.exe
-        cat setup.log
+        
+    - shell: cmd
+      run: |
+        D:\ew\common\bin\IarBuild.exe 
+        
         
   
