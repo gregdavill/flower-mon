@@ -1,0 +1,3 @@
+$Revision: 12914 $ 
+ 
+This is version 3.0.0alpha of driverlib. 

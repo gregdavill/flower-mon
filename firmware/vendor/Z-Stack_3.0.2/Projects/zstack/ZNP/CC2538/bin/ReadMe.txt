@@ -1,0 +1,1 @@
+CC2538_SBL_UART.hex - Serial Bootloader for CC2538 ZNP target device using the UART interface.
