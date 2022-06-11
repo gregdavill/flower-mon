@@ -24,7 +24,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED ï¿½AS ISï¿½ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -208,10 +208,10 @@ int osal_strlen( char *pString )
  *
  * @return  pointer to end of destination buffer
  */
-void *osal_memcpy( void *dst, const void GENERIC *src, unsigned int len )
+void *osal_memcpy( void *dst, const void *src, unsigned int len )
 {
   uint8 *pDst;
-  const uint8 GENERIC *pSrc;
+  const uint8 *pSrc;
 
   pSrc = src;
   pDst = dst;
@@ -239,10 +239,10 @@ void *osal_memcpy( void *dst, const void GENERIC *src, unsigned int len )
  *
  * @return  pointer to end of destination buffer
  */
-void *osal_revmemcpy( void *dst, const void GENERIC *src, unsigned int len )
+void *osal_revmemcpy( void *dst, const void *src, unsigned int len )
 {
   uint8 *pDst;
-  const uint8 GENERIC *pSrc;
+  const uint8 *pSrc;
 
   pSrc = src;
   pSrc += (len-1);
@@ -266,7 +266,7 @@ void *osal_revmemcpy( void *dst, const void GENERIC *src, unsigned int len )
  * @return  pointer to the new allocated buffer, or NULL if
  *          allocation problem.
  */
-void *osal_memdup( const void GENERIC *src, unsigned int len )
+void *osal_memdup( const void *src, unsigned int len )
 {
   uint8 *pDst;
 
@@ -292,10 +292,10 @@ void *osal_memdup( const void GENERIC *src, unsigned int len )
  *
  * @return  TRUE - same, FALSE - different
  */
-uint8 osal_memcmp( const void GENERIC *src1, const void GENERIC *src2, unsigned int len )
+uint8 osal_memcmp( const void *src1, const void *src2, unsigned int len )
 {
-  const uint8 GENERIC *pSrc1;
-  const uint8 GENERIC *pSrc2;
+  const uint8 *pSrc1;
+  const uint8 *pSrc2;
 
   pSrc1 = src1;
   pSrc2 = src2;

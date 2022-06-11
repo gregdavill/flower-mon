@@ -1662,7 +1662,7 @@ static uint8 bdb_RepLoadCfgRecords( void )
 static void bdb_RepReport( uint8 specificCLusterEndpointIndex )
 {
   afAddrType_t dstAddr;
-  zclReportCmd_t *pReportCmd;
+  zclReportCmd_t *pReportCmd = NULL;
   uint8 i;
   
   bdbReportAttrClusterEndpoint_t* clusterEndpointItem = NULL;
@@ -1681,14 +1681,21 @@ static void bdb_RepReport( uint8 specificCLusterEndpointIndex )
   // actually send the report
   if( clusterEndpointItem->consolidatedMaxReportInt != ZCL_REPORTING_OFF && clusterEndpointItem->attrLinkedList.numItems )
   {
+    uint8 *pAttrData = NULL;
+    uint8 *pAttrDataTemp = NULL;
+    
     dstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
     dstAddr.addr.shortAddr = 0;
     dstAddr.endPoint = clusterEndpointItem->endpoint;
     dstAddr.panId = _NIB.nwkPanId;
     
+    // List of attributes to report
     pReportCmd = osal_mem_alloc( sizeof( zclReportCmd_t ) + (clusterEndpointItem->attrLinkedList.numItems * sizeof( zclReport_t )) );
-    if ( pReportCmd != NULL )
+    // List of attribute data
+    pAttrData = osal_mem_alloc(clusterEndpointItem->attrLinkedList.numItems * BDBREPORTING_MAX_ANALOG_ATTR_SIZE);
+    if ( (pReportCmd != NULL) && (pAttrData != NULL) )
     {
+      pAttrDataTemp = pAttrData;
       pReportCmd->numAttr = clusterEndpointItem->attrLinkedList.numItems;
       for ( i = 0; i < clusterEndpointItem->attrLinkedList.numItems; ++ i )
       {
@@ -1698,14 +1705,17 @@ static void bdb_RepReport( uint8 specificCLusterEndpointIndex )
         
         bdbLinkedListAttrItem_t* attrListItem = bdb_linkedListAttrGetAtIndex( &clusterEndpointItem->attrLinkedList, i );      
         if(attrListItem!=NULL)
-        {
-          pReportCmd->attrList[i].attrID = attrListItem->data->attrID;   
+        {   
           zclAttribute_t attrRec;
+          pReportCmd->attrList[i].attrID = attrListItem->data->attrID;
           uint8 attrRes = bdb_RepFindAttrEntry( clusterEndpointItem->endpoint, clusterEndpointItem->cluster, attrListItem->data->attrID, &attrRec );
           if( attrRes == BDBREPORTING_TRUE )
           {
-            pReportCmd->attrList[i].dataType = attrRec.dataType;          
-            pReportCmd->attrList[i].attrData = attrRec.dataPtr;          
+            pReportCmd->attrList[i].dataType = attrRec.dataType;
+            pReportCmd->attrList[i].attrData = pAttrDataTemp;
+            // Copy data to current attribute data pointer
+            pAttrDataTemp = osal_memcpy(pAttrDataTemp, attrRec.dataPtr, BDBREPORTING_MAX_ANALOG_ATTR_SIZE);
+            
             //Update last value reported
             if( zclAnalogDataType( attrRec.dataType ) )
             { 
@@ -1720,8 +1730,14 @@ static void bdb_RepReport( uint8 specificCLusterEndpointIndex )
       zcl_SendReportCmd( clusterEndpointItem->endpoint, &dstAddr,
                          clusterEndpointItem->cluster, pReportCmd,
                          ZCL_FRAME_SERVER_CLIENT_DIR, BDB_REPORTING_DISABLE_DEFAULT_RSP, bdb_getZCLFrameCounter( ) );
-
+    }
+    if( (pReportCmd != NULL ) )
+    {
       osal_mem_free( pReportCmd );
+    }
+    if ( (pAttrData != NULL) )
+    {
+      osal_mem_free( pAttrData );
     }
   }
 }

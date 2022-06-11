@@ -12,7 +12,7 @@
 #include "hal_led.h"
 #include "hal_mcu.h"
 #include "hal_types.h"
-#include "osal.h"
+#include "OSAL.h"
 
 /**************************************************************************************************
  *                                              MACROS

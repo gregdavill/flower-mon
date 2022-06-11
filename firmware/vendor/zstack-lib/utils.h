@@ -1,6 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
-extern float mapRange(float a1, float a2, float b1, float b2, float s);
+extern double mapRange(double a1, double a2, double b1, double b2, double s);
 
 extern uint16 adcReadSampled(uint8 channel, uint8 resolution, uint8 reference, uint8 samplesCount);
 

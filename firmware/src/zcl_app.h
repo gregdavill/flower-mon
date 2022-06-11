@@ -110,7 +110,7 @@ extern void zclApp_Init(byte task_id);
  */
 extern UINT16 zclApp_event_loop(byte task_id, UINT16 events);
 
-void user_delay_ms(unsigned int);
+void user_delay_ms(uint32_t period);
 
 #ifdef __cplusplus
 }

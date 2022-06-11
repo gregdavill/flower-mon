@@ -3456,7 +3456,7 @@ ZStatus_t ZDSecMgrReadKeyFromNv(uint16 keyNvId, void *keyinfo)
   
   else if(keyNvId == ZCD_NV_TCLK_DEFAULT)
   {
-    osal_memcpy(keyinfo,defaultTCLinkKey,SEC_KEY_LEN);
+    osal_memcpy(keyinfo,(void const*)defaultTCLinkKey,SEC_KEY_LEN);
     return ZSuccess;
   }
   
@@ -3465,7 +3465,7 @@ ZStatus_t ZDSecMgrReadKeyFromNv(uint16 keyNvId, void *keyinfo)
   {
     if(ZG_DEVICE_JOINING_TYPE)
     {
-      osal_memcpy(keyinfo,distributedDefaultKey,SEC_KEY_LEN);
+      osal_memcpy(keyinfo,(void const*)distributedDefaultKey,SEC_KEY_LEN);
       return ZSuccess;
     }
   }

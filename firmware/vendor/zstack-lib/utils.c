@@ -4,8 +4,8 @@
 // #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 // #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-float mapRange(float a1, float a2, float b1, float b2, float s) {
-    float result = b1 + (s - a1) * (b2 - b1) / (a2 - a1);
+double mapRange(double a1, double a2, double b1, double b2, double s) {
+    double result = b1 + (s - a1) * (b2 - b1) / (a2 - a1);
     return MIN(b2, MAX(result, b1));
 }
 

@@ -1,4 +1,3 @@
-#include "preinclude.h"
 
 #include "AF.h"
 #include "OSAL.h"
@@ -26,7 +25,6 @@
 
 #include "OnBoard.h"
 
-
 /* HAL */
 #include "bme280.h"
 #include "ds18b20.h"
@@ -41,8 +39,6 @@
 #include "factory_reset.h"
 #include "utils.h"
 #include "version.h"
-
-#include <math.h>
 
 /*********************************************************************
  * MACROS
@@ -137,6 +133,7 @@ void zclApp_Init(byte task_id) {
 
     HalI2CInit();
     zclApp_InitPWM();
+    
     // this is important to allow connects throught routers
     // to make this work, coordinator should be compiled with this flag #define TP2_LEGACY_ZC
     requestNewTrustCenterLinkKey = FALSE;
@@ -297,14 +294,14 @@ static void zclApp_ReadLumosity(void) {
 
 static void _delay_us(uint16 microSecs) {
     while (microSecs--) {
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
-        // asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
+        asm("NOP");
     }
 }
 
@@ -340,7 +337,7 @@ static void zclApp_ReadBME280(struct bme280_dev *dev) {
     int8_t rslt = bme280_get_sensor_data(BME280_ALL, &bme_results, dev);
     if (rslt == BME280_OK) {
         zclApp_Temperature_Sensor_MeasuredValue = (int16)bme_results.temperature;
-        zclApp_PressureSensor_ScaledValue = (int16)(powf(10.0, (float)zclApp_PressureSensor_Scale) * (float)bme_results.pressure);
+        zclApp_PressureSensor_ScaledValue = (int16)(pow(10.0, (double)zclApp_PressureSensor_Scale) * (double)bme_results.pressure);
         zclApp_PressureSensor_MeasuredValue = bme_results.pressure / 100;
         LREP("ReadBME280 t=%ld, p=%ld h=%ld\r\n", bme_results.temperature, bme_results.pressure, bme_results.humidity);
         zclApp_HumiditySensor_MeasuredValue = (uint16)(bme_results.humidity * 100 / 1024);

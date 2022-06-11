@@ -48,7 +48,7 @@
 #include "hal_key.h"
 #include "hal_led.h"
 #include "OSAL_Nv.h"
-#include "osal.h"
+#include "OSAL.h"
 #include "NLMEDE.h"
 #include "MT.h"
 #include "MT_UTIL.h"

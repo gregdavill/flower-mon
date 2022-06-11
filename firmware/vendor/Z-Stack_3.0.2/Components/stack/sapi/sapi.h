@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED ï¿½AS ISï¿½ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -44,7 +44,7 @@
  * INCLUDES
  */
 #include "ZComDef.h"
-#include "af.h"
+#include "AF.h"
 
 /******************************************************************************
  * CONSTANTS
@@ -196,7 +196,7 @@ extern uint8 zb_PermitJoiningRequest ( uint16 destination, uint8 timeout );
 /******************************************************************************
  * @fn          zb_BindDevice
  *
- * @brief       The zb_BindDevice function establishes or removes a ‘binding’
+ * @brief       The zb_BindDevice function establishes or removes a ï¿½bindingï¿½
  *              between two devices.  Once bound, an application can send
  *              messages to a device by referencing the commandId for the
  *              binding.

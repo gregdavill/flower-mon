@@ -41,7 +41,7 @@
 
 #include "Debug.h"
 #include "ioCC2530.h"
-#include "zcomdef.h"
+#include "ZComDef.h"
 #include "utils.h"
 
 #define STATIC static

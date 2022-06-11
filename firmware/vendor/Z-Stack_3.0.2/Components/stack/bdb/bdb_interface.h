@@ -182,10 +182,10 @@ extern "C"
 // For certification only:
 #define TOUCHLINK_ENC_KEY  TOUCHLINK_CERTIFICATION_ENC_KEY
 #define TOUCHLINK_LINK_KEY  TOUCHLINK_CERTIFICATION_LINK_KEY
-#define TOUCHLINK_KEY_INDEX TOUCHLINK_KEY_INDEX_CERT
+#define TOUCHLINK_KEY_INDEX TOUCHLINK_KEY_INDEX_MASTER
 
 // For internal EP's simple descriptor
-#define TOUCHLINK_INTERNAL_ENDPOINT                             13
+#define TOUCHLINK_INTERNAL_ENDPOINT                             42
 #define TOUCHLINK_INTERNAL_DEVICE_ID                            0xE15E
 #define TOUCHLINK_INTERNAL_FLAGS                                0
 #define TOUCHLINK_DEFAULT_IDENTIFY_TIME                         3
