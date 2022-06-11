@@ -461,9 +461,9 @@
                 </option>
                 <option>
                     <name>Compiler Extra Options Edit</name>
-                    <state>-f $PROJ_DIR$\..\vendor\Tools\CC2530DB\f8wEndev.cfg</state>
+                    <state>-f $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wEndev.cfg</state>
                     <state>-f $PROJ_DIR$\..\vendor\zstack-lib\f8wConfig.cfg</state>
-                    <state>-f $PROJ_DIR$\..\vendor\Tools\CC2530DB\f8wZCL.cfg</state>
+                    <state>-f $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wZCL.cfg</state>
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
@@ -485,7 +485,7 @@
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\services\sdata</state>
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\af</state>
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb</state>
-                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\gp</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\GP</state>
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk</state>
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sapi</state>
                     <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sec</state>
@@ -841,7 +841,7 @@
                 </option>
                 <option>
                     <name>XclFile</name>
-                    <state>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8w2530.xcl</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Tools\CC2530DB\f8w2530.xcl</state>
                 </option>
                 <option>
                     <name>XclFileSlave</name>
@@ -1602,39 +1602,39 @@
                 </option>
                 <option>
                     <name>Compiler Extra Options Edit</name>
-                    <state>-f $PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wEndev.cfg</state>
-                    <state>-f $PROJ_DIR$\..\zstack-lib\f8wConfig.cfg</state>
-                    <state>-f $PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wZCL.cfg</state>
+                    <state>-f $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Tools\CC2530DB\f8wEndev.cfg</state>
+                    <state>-f $PROJ_DIR$\..\vendor\zstack-lib\f8wConfig.cfg</state>
+                    <state>-f $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Tools\CC2530DB\f8wZCL.cfg</state>
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$</state>
-                    <state>$PROJ_DIR$\..\Source</state>
-                    <state>$PROJ_DIR$\..\BME280_driver</state>
-                    <state>$PROJ_DIR$\..\zstack-lib</state>
-                    <state>$PROJ_DIR$\..\..\Source</state>
-                    <state>$PROJ_DIR$\..\..\..\ZMain\TI2530DB</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\hal\include</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\mac\include</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\mt</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\osal\include</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\services\saddr</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\services\sdata</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\af</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\gp</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\sapi</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\sec</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\sys</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\zmac</state>
-                    <state>$PROJ_DIR$\..\..\..\..\..\Components\zmac\f8w</state>
+                    <state>$PROJ_DIR$\..\src</state>
+                    <state>$PROJ_DIR$\..\vendor\BME280_driver</state>
+                    <state>$PROJ_DIR$\..\vendor\zstack-lib</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\HomeAutomation\Source</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\ZMain\TI2530DB</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\include</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\services\saddr</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\services\sdata</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\af</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\GP</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sapi</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sec</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sys</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac\f8w</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1982,7 +1982,7 @@
                 </option>
                 <option>
                     <name>XclFile</name>
-                    <state>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8w2530.xcl</state>
+                    <state>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Tools\CC2530DB\f8w2530.xcl</state>
                 </option>
                 <option>
                     <name>XclFileSlave</name>
@@ -2204,9 +2204,9 @@
                 </option>
                 <option>
                     <name>Linker Extra Options Edit</name>
-                    <state>-C $PROJ_DIR$\..\..\..\Libraries\TI2530DB\bin\EndDevice-Pro.lib</state>
-                    <state>-C $PROJ_DIR$\..\..\..\Libraries\TI2530DB\bin\Security.lib</state>
-                    <state>-C $PROJ_DIR$\..\..\..\Libraries\TIMAC\bin\TIMAC-CC2530.lib</state>
+                    <state>-C $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Libraries\TI2530DB\bin\EndDevice-Pro.lib</state>
+                    <state>-C $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Libraries\TI2530DB\bin\Security.lib</state>
+                    <state>-C $PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Libraries\TIMAC\bin\TIMAC-CC2530.lib</state>
                 </option>
                 <option>
                     <name>CrcAlign</name>
@@ -2286,82 +2286,82 @@
     <group>
         <name>App</name>
         <file>
-            <name>$PROJ_DIR$\..\BME280_driver\bme280.c</name>
+            <name>$PROJ_DIR$\..\vendor\BME280_driver\bme280.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\BME280_driver\bme280.h</name>
+            <name>$PROJ_DIR$\..\vendor\BME280_driver\bme280.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\BME280_driver\bme280_defs.h</name>
+            <name>$PROJ_DIR$\..\vendor\BME280_driver\bme280_defs.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\hal_key.c</name>
+            <name>$PROJ_DIR$\..\vendor\\zstack-lib\hal_key.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\hal_key.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_key.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\OSAL_App.c</name>
+            <name>$PROJ_DIR$\..\src\OSAL_App.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\preinclude.h</name>
+            <name>$PROJ_DIR$\..\src\preinclude.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\stdint.h</name>
+            <name>$PROJ_DIR$\..\src\stdint.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\version.c</name>
+            <name>$PROJ_DIR$\..\src\version.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\version.h</name>
+            <name>$PROJ_DIR$\..\src\version.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\zcl_app.c</name>
+            <name>$PROJ_DIR$\..\src\zcl_app.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\zcl_app.h</name>
+            <name>$PROJ_DIR$\..\src\zcl_app.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Source\zcl_app_data.c</name>
+            <name>$PROJ_DIR$\..\src\zcl_app_data.c</name>
         </file>
     </group>
     <group>
         <name>BDB</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_FindingAndBinding.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_FindingAndBinding.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_interface.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_interface.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_Reporting.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_Reporting.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_Reporting.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_Reporting.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_tlCommissioning.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_tlCommissioning.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_tlCommissioning.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_tlCommissioning.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_touchlink.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_touchlink.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_touchlink.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_touchlink.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_touchlink_initiator.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_touchlink_initiator.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\bdb\bdb_touchlink_initiator.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\bdb\bdb_touchlink_initiator.h</name>
         </file>
     </group>
     <group>
@@ -2369,52 +2369,49 @@
         <group>
             <name>Common</name>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\common\hal_assert.c</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\common\hal_assert.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\common\hal_drivers.c</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\common\hal_drivers.c</name>
             </file>
         </group>
         <group>
             <name>Include</name>
             <file>
-                <name>$PROJ_DIR$\..\Source\hal\ds18b20.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_adc.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_adc.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_assert.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_assert.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_board.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_board.h</name>
+                <name>$PROJ_DIR$\..\src\hal_board_cfg.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Source\hal_board_cfg.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_defs.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_defs.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_drivers.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_drivers.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_flash.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_flash.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_lcd.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_lcd.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_led.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_led.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_sleep.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_sleep.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_timer.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_timer.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\include\hal_uart.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\include\hal_uart.h</name>
             </file>
         </group>
         <group>
@@ -2427,49 +2424,49 @@
                 <group>
                     <name>Drivers</name>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_adc.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_adc.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_dma.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_dma.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_flash.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_flash.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_lcd.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_lcd.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_led.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_led.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_sleep.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_sleep.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_startup.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_startup.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_timer.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_timer.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_uart.c</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_uart.c</name>
                     </file>
                 </group>
                 <group>
                     <name>Includes</name>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_aes.h</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_aes.h</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_ccm.h</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_ccm.h</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_dma.h</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_dma.h</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_mcu.h</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_mcu.h</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2530EB\hal_types.h</name>
+                        <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\hal\target\CC2530EB\hal_types.h</name>
                     </file>
                 </group>
             </group>
@@ -2480,25 +2477,25 @@
         <group>
             <name>High Level</name>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level\mac_cfg.c</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level\mac_cfg.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level\mac_high_level.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level\mac_high_level.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level\mac_pib.c</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level\mac_pib.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level\mac_pib.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level\mac_pib.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\high_level\mac_spec.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\high_level\mac_spec.h</name>
             </file>
         </group>
         <group>
             <name>Include</name>
             <file>
-                <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\include\mac_api.h</name>
+                <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\include\mac_api.h</name>
             </file>
         </group>
         <group>
@@ -2506,85 +2503,85 @@
             <group>
                 <name>Common</name>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_assert.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_assert.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_autopend.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_autopend.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_autopend.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_autopend.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_backoff_timer.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_backoff_timer.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_backoff_timer.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_backoff_timer.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_low_level.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_low_level.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_low_level.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_low_level.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_radio.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_radio.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_radio.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_radio.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_rx.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_rx.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_rx.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_rx.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_rx_onoff.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_rx_onoff.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_rx_onoff.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_sleep.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_sleep.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_sleep.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_sleep.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_tx.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_tx.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\mac_tx.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\mac_tx.h</name>
                 </file>
             </group>
             <group>
                 <name>System</name>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_csp_tx.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_csp_tx.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_csp_tx.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_csp_tx.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_mcu.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_mcu.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_mcu.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_mcu.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_mem.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_mem.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_mem.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_radio_defs.h</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_radio_defs.h</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\..\..\..\..\Components\mac\low_level\srf04\single_chip\mac_rffrontend.c</name>
+                    <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mac\low_level\srf04\single_chip\mac_rffrontend.c</name>
                 </file>
             </group>
         </group>
@@ -2592,300 +2589,300 @@
     <group>
         <name>MT</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\DebugTrace.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\DebugTrace.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\DebugTrace.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\DebugTrace.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_AF.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_AF.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_AF.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_AF.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_APP.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_APP.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_APP.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_APP.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_APP_CONFIG.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_APP_CONFIG.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_APP_CONFIG.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_APP_CONFIG.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_DEBUG.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_DEBUG.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_DEBUG.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_DEBUG.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_GP.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_GP.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_GP.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_GP.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_NWK.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_NWK.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_NWK.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_NWK.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_RPC.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_RPC.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_SAPI.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_SAPI.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_SAPI.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_SAPI.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_SYS.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_SYS.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_SYS.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_SYS.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_TASK.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_TASK.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_TASK.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_TASK.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_UART.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_UART.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_UART.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_UART.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_UTIL.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_UTIL.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_UTIL.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_UTIL.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_VERSION.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_VERSION.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_VERSION.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_VERSION.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_ZDO.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_ZDO.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\mt\MT_ZDO.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\mt\MT_ZDO.h</name>
         </file>
     </group>
     <group>
         <name>NWK</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\AddrMgr.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\AddrMgr.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\APS.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\APS.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\aps_frag.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\aps_frag.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\aps_groups.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\aps_groups.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\aps_util.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\aps_util.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\APSMEDE.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\APSMEDE.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\AssocList.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\AssocList.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\BindingTable.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\BindingTable.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\BindingTable.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\BindingTable.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\NLMEDE.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\NLMEDE.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\nwk.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\nwk.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\nwk_bufs.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\nwk_bufs.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\nwk_globals.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\nwk_globals.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\nwk_globals.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\nwk_globals.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\nwk_util.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\nwk_util.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\reflecttrack.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\reflecttrack.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\rtg.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\rtg.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\stub_aps.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\stub_aps.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\nwk\stub_aps.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\nwk\stub_aps.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sys\ZDiags.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sys\ZDiags.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sys\ZDiags.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sys\ZDiags.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sys\ZGlobals.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sys\ZGlobals.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sys\ZGlobals.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sys\ZGlobals.h</name>
         </file>
     </group>
     <group>
         <name>OSAL</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\comdef.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\comdef.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\common\OSAL.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\common\OSAL.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\common\OSAL_Clock.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\common\OSAL_Clock.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_Clock.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_Clock.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\mcu\cc2530\OSAL_Math.s51</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\mcu\cc2530\OSAL_Math.s51</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\common\OSAL_Memory.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\common\OSAL_Memory.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_Memory.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_Memory.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\mcu\cc2530\OSAL_Nv.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\mcu\cc2530\OSAL_Nv.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_Nv.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_Nv.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\common\OSAL_PwrMgr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_PwrMgr.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_PwrMgr.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_Tasks.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_Tasks.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\common\OSAL_Timers.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\common\OSAL_Timers.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\OSAL_Timers.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\OSAL_Timers.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\osal\include\ZComDef.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\osal\include\ZComDef.h</name>
         </file>
     </group>
     <group>
         <name>Profile</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\af\AF.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\af\AF.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\af\AF.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\af\AF.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_general.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl_general.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_general.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl_general.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\Source\zcl_ha.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\Source\zcl_ha.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\HomeAutomation\Source\zcl_ha.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_lighting.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl_lighting.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zcl\zcl_lighting.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zcl\zcl_lighting.h</name>
         </file>
     </group>
     <group>
         <name>Security</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sec\ssp.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sec\ssp.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\sec\ssp_hash.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\sec\ssp_hash.h</name>
         </file>
     </group>
     <group>
         <name>Services</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\services\saddr\saddr.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\services\saddr\saddr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\services\saddr\saddr.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\services\saddr\saddr.h</name>
         </file>
     </group>
     <group>
         <name>Tools</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8w2530.xcl</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\Tools\CC2530DB\f8w2530.xcl</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\zstack-lib\f8wConfig.cfg</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wCoord.cfg</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wCoord.cfg</name>
             <excluded>
                 <configuration>CHDTECH_DEV</configuration>
                 <configuration>DIYRuZ_Flower</configuration>
             </excluded>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wEndev.cfg</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wEndev.cfg</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wRouter.cfg</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wRouter.cfg</name>
             <excluded>
                 <configuration>CHDTECH_DEV</configuration>
                 <configuration>DIYRuZ_Flower</configuration>
             </excluded>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\Tools\CC2530DB\f8wZCL.cfg</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Tools\CC2530DB\f8wZCL.cfg</name>
         </file>
     </group>
     <group>
@@ -2894,115 +2891,115 @@
     <group>
         <name>ZDO</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDApp.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDApp.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDApp.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDApp.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDConfig.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDConfig.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDConfig.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDConfig.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDNwkMgr.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDNwkMgr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDNwkMgr.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDNwkMgr.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDObject.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDObject.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDObject.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDObject.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDProfile.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDProfile.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDProfile.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDProfile.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDSecMgr.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDSecMgr.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\stack\zdo\ZDSecMgr.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\stack\zdo\ZDSecMgr.h</name>
         </file>
     </group>
     <group>
         <name>ZMac</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\zmac\f8w\zmac.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac\f8w\zmac.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\zmac\ZMAC.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac\ZMAC.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\zmac\f8w\zmac_cb.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac\f8w\zmac_cb.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\zmac\f8w\zmac_internal.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Components\zmac\f8w\zmac_internal.h</name>
         </file>
     </group>
     <group>
         <name>ZMain</name>
         <file>
-            <name>$PROJ_DIR$\..\..\..\ZMain\TI2530DB\chipcon_cstartup.s51</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\ZMain\TI2530DB\chipcon_cstartup.s51</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\ZMain\TI2530DB\OnBoard.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\ZMain\TI2530DB\OnBoard.h</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\ZMain\TI2530DB\OnBoard.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\ZMain\TI2530DB\ZMain.c</name>
+            <name>$PROJ_DIR$\..\vendor\Z-Stack_3.0.2\Projects\zstack\ZMain\TI2530DB\ZMain.c</name>
         </file>
     </group>
     <group>
         <name>zstack-lib</name>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\battery.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\battery.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\bettery.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\bettery.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\commissioning.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\commissioning.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\commissioning.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\commissioning.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\Debug.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\Debug.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\Debug.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\Debug.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\ds18b20.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\ds18b20.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\ds18b20.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\ds18b20.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\factory_reset.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\factory_reset.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\factory_reset.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\factory_reset.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\hal_i2c.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_i2c.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\hal_i2c.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_i2c.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\utils.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\utils.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\zstack-lib\utils.h</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\utils.h</name>
         </file>
     </group>
 </project>
