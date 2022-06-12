@@ -198,7 +198,7 @@ extern uint8 aExtendedAddress[8];
 
 #define OSAL_SET_CPU_INTO_SLEEP(timeout) halSleep(timeout); /* Called from OSAL_PwrMgr */
 
-#if (1)
+#ifdef __IAR_SYSTEMS_ICC__
 // Internal (MCU) Stack addresses
 #define CSTACK_BEG ((uint8 const *)(_Pragma("segment=\"XSTACK\"") __segment_begin("XSTACK")))
 #define CSTACK_END ((uint8 const *)(_Pragma("segment=\"XSTACK\"") __segment_end("XSTACK"))-1)
@@ -334,7 +334,7 @@ typedef struct
   /*
    * Board specific soft reset.
    */
-  extern void Onboard_soft_reset( void );
+  extern __near_func void Onboard_soft_reset( void );
 
 /*********************************************************************
 *********************************************************************/
