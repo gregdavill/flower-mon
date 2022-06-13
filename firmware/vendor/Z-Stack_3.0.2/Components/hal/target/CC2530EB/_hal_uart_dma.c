@@ -665,7 +665,9 @@ static void HalUARTPollDMA(void)
       // to cause concurrent access to this variable.
       dmaCfg.txShdwValid = FALSE;
     
-      evt |= HAL_UART_TX_IDLE;
+      if(!dmaCfg.txDMAPending){
+        evt |= HAL_UART_TX_IDLE;
+      }
     }
   }
   
