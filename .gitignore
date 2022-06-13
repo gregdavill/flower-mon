@@ -1,3 +1,7 @@
 *.bak
 *-backups/
 *-bak
+
+*Obj/
+*Exe/
+*List/

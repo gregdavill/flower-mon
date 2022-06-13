@@ -81,6 +81,9 @@ extern uint16 zclApp_BatteryVoltageRawAdc;
 #ifndef PWS_MINI
 extern int16 zclApp_Temperature_Sensor_MeasuredValue;
 #endif
+
+extern uint16 zclApp_RelativeHumiditySensor_MeasuredValue;
+
 extern uint16 zclApp_SoilHumiditySensor_MeasuredValue;
 extern uint16 zclApp_SoilHumiditySensor_MeasuredValue_old;
 extern uint16 zclApp_SoilHumiditySensor_MeasuredValueTr;

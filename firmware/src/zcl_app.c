@@ -30,6 +30,7 @@
 #include "factory_reset.h"
 #include "hal_adc.h"
 #include "hal_drivers.h"
+#include "hal_i2c.h"
 #include "hal_key.h"
 #include "hal_led.h"
 #include "inttempsens.h"
@@ -80,7 +81,10 @@ static void zclApp_ReadSensors(void);
 static void zclApp_IntTempSens(void);
 #endif
 static void zclApp_ReadSoilHumidity(void);
+static bool zclApp_StartReadHumiditiyMeasurment(void);
+static void zclApp_ReadHumiditiy(void);
 static void zclApp_InitPWM(void);
+void zclApp_BatteryReport(void); 
 
 static void zcl_BasicResetCB(void);
 
@@ -101,9 +105,10 @@ static void zclApp_DisableSensorPWR(void){
     P1 &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(5) | BV(6) | BV(7));
     P1INP &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(5) | BV(6) | BV(7));
     
-    P0DIR |= BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(5) | BV(6) | BV(7);
-    P0 &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(5) | BV(6) | BV(7));
-    P0INP &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(5) | BV(6) | BV(7));
+    P0DIR |= BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(7);
+    
+    P0 &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(7));
+    P0INP |= (BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(7));
 
     P2DIR |= BV(1) | BV(2);
     P2 &= ~(BV(1) | BV(2));
@@ -137,6 +142,7 @@ void zclApp_Init(byte task_id) {
 
 
     zclApp_InitPWM();
+    HalI2CInit();
 
     zclApp_TaskID = task_id;
     bdb_RegisterSimpleDescriptor(&zclApp_Desc);
@@ -145,18 +151,18 @@ void zclApp_Init(byte task_id) {
 
     /* Run an inital sensor measurement */
     zclSampleTemperatureSensor_ResetAttributesToDefaultValues();
-    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 1000);
-    user_delay_ms(10);
+    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 5000);
+    //user_delay_ms(10);
     
     zcl_registerAttrList(zclApp_Desc.EndPoint, zclApp_NumAttributes, zclApp_AttrsFirstEP);
-
     zcl_registerForMsg(zclApp_TaskID);
 
     // Register for all key events - This app will handle all key events
     RegisterForKeys(zclApp_TaskID);
 
 
-    osal_start_reload_timer(zclApp_TaskID, APP_REPORT_EVT, ((uint32) (1000UL * 45)));
+    /* 5m interval */
+    osal_start_reload_timer(zclApp_TaskID, APP_REPORT_EVT, ((uint32) (1000UL * 60 * 5)));
 }
 
 uint16 zclApp_event_loop(uint8 task_id, uint16 events) {
@@ -208,9 +214,9 @@ static void zclApp_HandleKeys(byte portAndAction, byte keyCode) {
     if (portAndAction & HAL_KEY_RELEASE) {
         LREPMaster("Key Release\r\n");  
         if (bdbAttributes.bdbNodeIsOnANetwork) {
-            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 200);
+            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 5000);
         } else {
-            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 1000);
+            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 5000);
         }
         HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
         pushBut = true;
@@ -237,38 +243,53 @@ static void zclApp_InitPWM(void) {
 }
 
 static void zclApp_ReadSensors(void) {
-    /**
-     * FYI: split reading sensors into phases, so single call wouldn't block processor
-     * for extensive ammount of time
-     * */
-    //HalLedSet(HAL_LED_1, HAL_LED_MODE_TOGGLE);
-    //HalLedSet(HAL_LED_1, HAL_LED_MODE_TOGGLE);
+    
+    uint8 sleepTimeMs = 0;
+
     switch (currentSensorsReadingPhase++) {
         case 0:
             zclApp_EnableSensorPWR();
-            break;
-
-        case 1:
             zclBattery_Report();
             T3CTL |= BV(4); /* Start Timer */
+            sleepTimeMs = 5;
             break;
         
-        case 2:
-            osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_HOLD);
+        case 1:
             zclApp_ReadSoilHumidity();
-            osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_CONSERVE);
+            
+            if(zclApp_StartReadHumiditiyMeasurment()){
+                /* Sleep Processor And Then read value whan done */
+                sleepTimeMs = 14;
+            }else{
+                /* Skip over reading if we didn't sucessfully see the i2c device */
+                currentSensorsReadingPhase++;
+                zclApp_DisableSensorPWR();
+            }
             break;
 
-        case 3:
-            zclApp_IntTempSens();
-            break;
-        
-        case 4:
-            //zclApp_DS18S20Sens();
+        case 2:
+            zclApp_ReadHumiditiy();
             zclApp_DisableSensorPWR();
-            break;
+            /* Fall through */
+
+        case 3:
+            /* Transmit all the new params */
+            //bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, POWER_CFG, ATTRID_POWER_CFG_BATTERY_PERCENTAGE_REMAINING);
+            //bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, POWER_CFG, ATTRID_POWER_CFG_BATTERY_VOLTAGE);
+            bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, SOIL_HUMIDITY, 0x0000);
+            bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+            bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, HUMIDITY, ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE);
+            
+            //LREP("Battery voltageZCL=%d prc=%d voltage=%d\r\n", zclBattery_Voltage, zclBattery_PercentageRemainig, millivolts);
+            //LREP("soilHumidityMinRangeAir=%d soilHumidityMaxRangeWater=%d\r\n", soilHumidityMinRangeAir, soilHumidityMaxRangeWater);
+            //LREP("ReadSoilHumidity raw=%d mapped=%d\r\n", zclApp_SoilHumiditySensor_MeasuredValueRawAdc, zclApp_SoilHumiditySensor_MeasuredValue);
+            //LREP("raw: t=%d h=%d\r\n", rawt, rawh);
+            //LREP("cal: t=%d h=%dC\r\n", hum, tem);
+    
+        
         default:
             currentSensorsReadingPhase = 0;
+            sleepTimeMs = 0;
 
             if(pushBut){
                 // Possible to force update of attrs?
@@ -278,8 +299,8 @@ static void zclApp_ReadSensors(void) {
             break;
     }
     
-    if (currentSensorsReadingPhase != 0) {
-        osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 10);
+    if (sleepTimeMs) {
+        osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, sleepTimeMs);
     }
 }
 
@@ -293,23 +314,84 @@ static void zclApp_ReadSoilHumidity(void) {
     // FYI: https://docs.google.com/spreadsheets/d/1qrFdMTo0ZrqtlGUoafeB3hplhU3GzDnVWuUK4M9OgNo/edit?usp=sharing
     uint16 soilHumidityMinRangeAir = (uint16)AIR_COMPENSATION_FORMULA(zclBattery_RawAdc);
     uint16 soilHumidityMaxRangeWater = (uint16)WATER_COMPENSATION_FORMULA(zclBattery_RawAdc);
-    LREP("soilHumidityMinRangeAir=%d soilHumidityMaxRangeWater=%d\r\n", soilHumidityMinRangeAir, soilHumidityMaxRangeWater);
     uint16 zclApp_SoilHumiditySensor_MeasuredValue =
         (uint16)mapRange(soilHumidityMinRangeAir, soilHumidityMaxRangeWater, 0.0, 10000.0, zclApp_SoilHumiditySensor_MeasuredValueRawAdc);
-    LREP("ReadSoilHumidity raw=%d mapped=%d\r\n", zclApp_SoilHumiditySensor_MeasuredValueRawAdc, zclApp_SoilHumiditySensor_MeasuredValue);
     
-    bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, SOIL_HUMIDITY, 0x0000);
+    //LREP("soilHumidityMinRangeAir=%d soilHumidityMaxRangeWater=%d\r\n", soilHumidityMinRangeAir, soilHumidityMaxRangeWater);
+    //LREP("ReadSoilHumidity raw=%d mapped=%d\r\n", zclApp_SoilHumiditySensor_MeasuredValueRawAdc, zclApp_SoilHumiditySensor_MeasuredValue);
+    //bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, SOIL_HUMIDITY, 0x0000);
 }
 
-static void zclApp_IntTempSens(void) {
-    int16 temp = readTemperature();
-    temp = temp / 100;
-    temp = temp * 100;
-    zclApp_Temperature_Sensor_MeasuredValue = temp;
+
+void zclApp_BatteryReport(void) {
+    uint16 millivolts = getBatteryVoltage();
+    zclBattery_Voltage = getBatteryVoltageZCL(millivolts);
+    zclBattery_PercentageRemainig = getBatteryRemainingPercentageZCLCR2032(millivolts);
+
+    //LREP("Battery voltageZCL=%d prc=%d voltage=%d\r\n", zclBattery_Voltage, zclBattery_PercentageRemainig, millivolts);
+    //bdb_RepChangedAttrValue(8, POWER_CFG, ATTRID_POWER_CFG_BATTERY_PERCENTAGE_REMAINING);
+    //bdb_RepChangedAttrValue(8, POWER_CFG, ATTRID_POWER_CFG_BATTERY_VOLTAGE);
+}
+
+
+static bool zclApp_StartReadHumiditiyMeasurment(void){
+    uint8 regs[8];
+    int8 ret;
+
+    /* Need 5ms after power on before COMs */
+
+    /* Start Measurement, 1x Avg Humidity, 1x Temp */
+    regs[0] = (0x00 << 3) | (0x00 << 2) | 0x01;
+    ret = I2C_WriteMultByte(0x7f, 1, &regs[0], 1);
+    if(ret != I2C_SUCCESS){
+        LREP("I2C_ReadMultByte ret=%d \r\n", ret);
+        return 0;
+    }
+
+    return 1;
+}
+
+static void zclApp_ReadHumiditiy(void) {
+    uint8 regs[8];
+    int8 ret;
     
-    LREP("ReadIntTempSens t=%d\r\n", zclApp_Temperature_Sensor_MeasuredValue);
-    
-    bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+    /* Max conversion time 1x time 14ms, For 4x / 8x, need ~75ms */
+
+    uint8 timeout = 5;
+    do{
+        ret = I2C_ReadMultByte(0x7f, 1, regs, 1);
+        if(ret != I2C_SUCCESS){
+            LREP("I2C_ReadMultByte ret=%d \r\n", ret);
+            return;
+        }
+
+        if(!(regs[0] & 0x01)){
+            ret = I2C_ReadMultByte(0x7f, 3, regs, 5);
+            if(ret != I2C_SUCCESS){
+                LREP("I2C_ReadMultByte ret=%d \r\n", ret);
+                return;
+            }
+
+            if(regs[0] & 0x01){
+                LREP("Error Occurred?\r\n", ret);
+                return;
+            }
+
+            uint16 rawt = regs[3] | (regs[4] << 8);
+            uint16 rawh = regs[1] | (regs[2] << 8);
+
+            zclApp_RelativeHumiditySensor_MeasuredValue = (uint16)mapRange(0, 100.0, 0.0, 10000.0, ((100.0f * rawh) / (1024.0)));
+            zclApp_Temperature_Sensor_MeasuredValue = (uint16)( (rawt - ((1 << 10) - (25.0f/0.1f) ) ) * 10.0f);
+
+            
+            //bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
+            //bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, HUMIDITY, ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE);
+
+            //LREP("raw: t=%d h=%d\r\n", rawt, rawh);
+            //LREP("cal: t=%d h=%dC\r\n", hum, tem);
+            break;
+        }
+    }while(timeout--);
 }
 
 static void _delay_us(uint16 microSecs) {
@@ -328,8 +410,7 @@ static void _delay_us(uint16 microSecs) {
 void user_delay_ms(uint32_t period) { _delay_us(1000 * period); }
 
 static void zclApp_Report(void) { 
-    osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_HOLD);
-    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 10); 
+    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 5); 
 }
 
 /*********************************************************************

@@ -39,6 +39,8 @@ const uint16 zclApp_clusterRevision_all = 0x0001;
 
 int16 zclApp_Temperature_Sensor_MeasuredValue = 0;
 
+uint16 zclApp_RelativeHumiditySensor_MeasuredValue = 0;
+
 uint16 zclApp_SoilHumiditySensor_MeasuredValue = 0;
 uint16 zclApp_SoilHumiditySensor_MeasuredValue_old = 0;
 uint16 zclApp_SoilHumiditySensor_MeasuredValueTr = 1;
@@ -112,11 +114,7 @@ CONST zclAttrRec_t zclApp_AttrsFirstEP[] = {
         (void *)&zclApp_clusterRevision_all
         }
     },
-/**
- * FYI: ATTRID_POWER_CFG_BATTERY_VOLTAGE_RAW_ADC and ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE_RAW_ADC
- * can be used to calculate relative humidity in converter
-*/
-    {HUMIDITY, {ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE, ZCL_UINT16, RR, (void *)&zclApp_SoilHumiditySensor_MeasuredValue}},
+    {HUMIDITY, {ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE, ZCL_UINT16, RR, (void *)&zclApp_RelativeHumiditySensor_MeasuredValue}},
     {SOIL_HUMIDITY, {ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE, ZCL_UINT16, RR, (void *)&zclApp_SoilHumiditySensor_MeasuredValue}}
 };
 

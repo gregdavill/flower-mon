@@ -46,10 +46,6 @@
 
 #define STATIC static
 
-#if !defined HAL_I2C_RETRY_CNT
-#define HAL_I2C_RETRY_CNT 3
-#endif
-
 // the default cofiguration below uses P0.6 for SDA and P0.5 for SCL.
 // change these as needed.
 #ifndef OCM_CLK_PORT
@@ -68,10 +64,6 @@
 #define OCM_DATA_PIN 6
 #endif
 
-
-
-#define OCM_ADDRESS (0xA0)
-
 #define SMB_ACK (0)
 #define SMB_NAK (1)
 #define SEND_STOP (0)
@@ -79,50 +71,18 @@
 #define SEND_START (0)
 #define NOSEND_START (1)
 
-// device specific as to where the 17th address bit goes...
-
 // *************************   MACROS   ************************************
-#undef P
+#define SDA_HIGH() { P0DIR &= ~BV(6); }
+#define SDA_LOW() { P0DIR |= BV(6); }
 
-
-
-// OCM port I/O defintions
-#define OCM_SCL BNAME(OCM_CLK_PORT, OCM_CLK_PIN)
-#define OCM_SDA BNAME(OCM_DATA_PORT, OCM_DATA_PIN)
-
-
-
-#define OCM_DATA_HIGH() { IO_DIR_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_IN); }
-
-#define OCM_DATA_LOW()                                                                                                                     \
-    {                                                                                                                                      \
-        IO_DIR_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_OUT);                                                                              \
-        OCM_SDA = 0;                                                                                                                       \
-    }
-
-
-
-STATIC void hali2cSend(uint8 *buffer, uint16 len, uint8 sendStart, uint8 sendStop);
-STATIC _Bool hali2cSendByte(uint8 dByte);
-STATIC void hali2cWrite(bool dBit);
-STATIC void hali2cClock(bool dir);
-STATIC void hali2cStart(void);
-STATIC void hali2cStop(void);
-STATIC void hali2cReceive(uint8 address, uint8 *buffer, uint16 len);
-STATIC uint8 hali2cReceiveByte(void);
-STATIC _Bool hali2cRead(void);
-STATIC void hali2cSendDeviceAddress(uint8 address);
-
-STATIC __near_func void hali2cWait(uint8);
-
-static void hali2cGroudPins(void);
-
-void hali2cGroudPins(void) {
-    IO_DIR_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_IN);
-    IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_IN);
-}
-
-STATIC uint8 s_xmemIsInit;
+STATIC inline uint8 hali2cSendByte(uint8 dByte);
+STATIC inline void hali2cWrite(bool dBit);
+STATIC inline void hali2cClock(bool dir);
+STATIC inline void hali2cStart(void);
+STATIC inline void hali2cRepeatStart(void);
+STATIC inline void hali2cStop(void);
+STATIC inline uint8 hali2cReceiveByte(void);
+STATIC inline bool hali2cRead(void);
 
 /*********************************************************************
  * @fn      HalI2CInit
@@ -131,73 +91,13 @@ STATIC uint8 s_xmemIsInit;
  * @return  void
  */
 void HalI2CInit(void) {
-    if (!s_xmemIsInit) {
-        s_xmemIsInit = 1;
-
-        // // Set port pins as inputs
-        // IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_IN);
-        // IO_DIR_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_IN);
-        // //
-        // // Set for general I/O operation
-        // IO_FUNC_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_GIO);
-        // IO_FUNC_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_GIO);
-        // //
-        // // Set I/O mode for pull-up/pull-down
-        // IO_IMODE_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_PUD);
-        // IO_IMODE_PORT_PIN(OCM_DATA_PORT, OCM_DATA_PIN, IO_PUD);
-
-        // // Set pins to pull-up
-        // IO_PUD_PORT(OCM_CLK_PORT, IO_PUP);
-        // IO_PUD_PORT(OCM_DATA_PORT, IO_PUP);
-    }
-}
-
-int8 HalI2CReceive(uint8 address, uint8 *buf, uint16 len) {
-    hali2cReceive(address, buf, len);
-
-    return 0;
-}
-
-int8 HalI2CSend(uint8 address, uint8 *buf, uint16 len) {
-    // begin the write sequence with the address byte
-    hali2cSendDeviceAddress(address);
-    hali2cSend(buf, len, NOSEND_START, SEND_STOP);
-
-    return 0;
-}
-/*********************************************************************
- * @fn      hali2cSend
- * @brief   Sends buffer contents to SM-Bus device
- * @param   buffer - ptr to buffered data to send
- * @param   len - number of bytes in buffer
- * @param   sendStart - whether or not to send start condition.
- * @param   sendStop - whether or not to send stop condition.
- * @return  void
- */
-STATIC void hali2cSend(uint8 *buffer, uint16 len, uint8 sendStart, uint8 sendStop) {
-    uint16 i;
-    uint8 retry = HAL_I2C_RETRY_CNT;
-
-    if (!len) {
-        return;
-    }
-
-    if (sendStart == SEND_START) {
-        hali2cStart();
-    }
-
-    for (i = 0; i < len; i++) {
-        do {
-            if (hali2cSendByte(buffer[i])) // takes care of ack polling
-            {
-                break;
-            }
-        } while (--retry);
-    }
-
-    if (sendStop == SEND_STOP) {
-        hali2cStop();
-    }
+    // Set for general I/O operation
+    P0SEL &= ~(BV(5) | BV(6));
+    // Set port pins as inputs
+    P0DIR &= ~(BV(5) | BV(6));
+    P0 &= ~(BV(5) | BV(6));
+    // Disable Pull-up/down
+    P0INP |= (BV(5) | BV(6));
 }
 
 /*********************************************************************
@@ -206,23 +106,35 @@ STATIC void hali2cSend(uint8 *buffer, uint16 len, uint8 sendStart, uint8 sendSto
  * @param   dByte - data byte to send
  * @return  ACK status - 0=none, 1=received
  */
-STATIC _Bool hali2cSendByte(uint8 dByte) {
+STATIC bool hali2cSendByte(uint8 dByte) {
     uint8 i;
 
     for (i = 0; i < 8; i++) {
+      
+      hali2cClock(0);
+    
         // Send the MSB
-        hali2cWrite(dByte & 0x80);
+      if(dByte & 0x80){
+         SDA_HIGH();
+      }else{
+       SDA_LOW();
+      }
+        //hali2cWrite(dByte & 0x80);
         // Next bit into MSB
         dByte <<= 1;
+    
+    hali2cClock(1);
+    
     }
+    
     // need clock low so if the SDA transitions on the next statement the
     // slave doesn't stop. Also give opportunity for slave to set SDA
     hali2cClock(0);
-    OCM_DATA_HIGH(); // set to input to receive ack...
+    SDA_HIGH(); // set to input to receive ack...
     hali2cClock(1);
-    hali2cWait(1);
+    // hali2cWait(1);
 
-    return (!OCM_SDA); // Return ACK status
+    return (!P0_6); // Return ACK status
 }
 
 /*********************************************************************
@@ -231,17 +143,17 @@ STATIC _Bool hali2cSendByte(uint8 dByte) {
  * @param   dBit - data bit to clock onto SM-Bus
  * @return  void
  */
-STATIC void hali2cWrite(bool dBit) {
+STATIC inline void hali2cWrite(bool dBit) {
     hali2cClock(0);
-    hali2cWait(1);
+    // hali2cWait(1);
     if (dBit) {
-        OCM_DATA_HIGH();
+        SDA_HIGH();
     } else {
-        OCM_DATA_LOW();
+        SDA_LOW();
     }
 
     hali2cClock(1);
-    hali2cWait(1);
+    // hali2cWait(1);
 }
 
 /*********************************************************************
@@ -254,21 +166,14 @@ STATIC void hali2cWrite(bool dBit) {
  * @param   dir - clock line direction
  * @return  void
  */
-STATIC void hali2cClock(bool dir) {
-    uint8 maxWait = 10;
+STATIC inline void hali2cClock(bool dir) {
     if (dir) {
-        IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_IN);
-        /* Wait until clock is high */
-        while (!OCM_SCL && maxWait) {
-            hali2cWait(1);
-            maxWait -= 1;
-        }
-
+        P0DIR &= ~(1 << 5);
+        //IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_IN);
     } else {
-        IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_OUT);
-        OCM_SCL = 0;
+        P0DIR |= (1 << 5);
+        //IO_DIR_PORT_PIN(OCM_CLK_PORT, OCM_CLK_PIN, IO_OUT);
     }
-    hali2cWait(1);
 }
 
 /*********************************************************************
@@ -280,28 +185,24 @@ STATIC void hali2cClock(bool dir) {
  * @return  void
  */
 STATIC void hali2cStart(void) {
-    uint8 retry = HAL_I2C_RETRY_CNT;
-
-    // set SCL to input but with pull-up. if slave is pulling down it will stay down.
-    hali2cClock(1);
-
-    do {
-        // wait for slave to release clock line...
-        if (OCM_SCL) // wait until the line is high...
-        {
-            break;
-        }
-        hali2cWait(1);
-    } while (--retry);
-
-    // SCL low to set SDA high so the transition will be correct.
+    SDA_LOW(); // start
     hali2cClock(0);
-    OCM_DATA_HIGH(); // SDA high
-    hali2cClock(1);  // set up for transition
-    hali2cWait(1);
-    OCM_DATA_LOW(); // start
+}
 
-    hali2cWait(1);
+
+/*********************************************************************
+ * @fn      hali2cRepeatStart
+ * @brief   Initiates SM-Bus communication. Makes sure that both the
+ *          clock and data lines of the SM-Bus are high. Then the data
+ *          line is set high and clock line is set low to start I/O.
+ * @param   void
+ * @return  void
+ */
+STATIC void hali2cRepeatStart(void) {
+    hali2cClock(0);
+    SDA_HIGH(); // SDA high
+    hali2cClock(1);
+    SDA_LOW(); // start
     hali2cClock(0);
 }
 
@@ -316,26 +217,10 @@ STATIC void hali2cStart(void) {
 STATIC void hali2cStop(void) {
     // Wait for clock high and data low
     hali2cClock(0);
-    OCM_DATA_LOW(); // force low with SCL low
-    hali2cWait(1);
+    SDA_LOW(); // force low with SCL low
 
     hali2cClock(1);
-    OCM_DATA_HIGH(); // stop condition
-    hali2cWait(1);
-
-    hali2cGroudPins();
-}
-
-/*********************************************************************
- * @fn      hali2cWait
- * @brief   Wastes a an amount of time.
- * @param   count: down count in busy-wait
- * @return  void
- */
-STATIC __near_func void hali2cWait(uint8 count) {
-    while (count--) {
-        asm("NOP");
-    }
+    SDA_HIGH(); // stop condition
 }
 
 /*********************************************************************
@@ -348,53 +233,13 @@ STATIC uint8 hali2cReceiveByte() {
     int8 i, rval = 0;
 
     for (i = 7; i >= 0; --i) {
+        rval <<= 1;
         if (hali2cRead()) {
-            rval |= 1 << i;
+            rval |= 1;
         }
     }
 
     return rval;
-}
-/**************************************************************************************************
-**************************************************************************************************/
-/*********************************************************************
- * @fn      hali2cReceive
- * @brief   reads data into a buffer
- * @param   address: linear address on part from which to read
- * @param   buffer: target array for read characters
- * @param   len: max number of characters to read
- * @return  void
- */
-STATIC void hali2cReceive(uint8 address, uint8 *buffer, uint16 len) {
-    // uint8  ch;
-    uint16 i;
-
-    if (!len) {
-        return;
-    }
-
-    hali2cSendDeviceAddress(address);
-
-    // ch = OCM_ADDRESS_BYTE(0, OCM_READ);
-    // hali2cSend(&ch, 1, SEND_START, NOSEND_STOP);
-
-    for (i = 0; i < len - 1; i++) {
-        // SCL may be high. set SCL low. If SDA goes high when input
-        // mode is set the slave won't see a STOP
-        hali2cClock(0);
-        OCM_DATA_HIGH();
-
-        buffer[i] = hali2cReceiveByte();
-        hali2cWrite(SMB_ACK); // write leaves SCL high
-    }
-
-    // condition SDA one more time...
-    hali2cClock(0);
-    OCM_DATA_HIGH();
-    buffer[i] = hali2cReceiveByte();
-    hali2cWrite(SMB_NAK);
-
-    hali2cStop();
 }
 
 /*********************************************************************
@@ -404,34 +249,15 @@ STATIC void hali2cReceive(uint8 address, uint8 *buffer, uint16 len) {
  * @param   void
  * @return  TRUE if bit read is 1 else FALSE
  */
-STATIC _Bool hali2cRead(void) {
+STATIC bool hali2cRead(void) {
     // SCL low to let slave set SDA. SCL high for SDA
     // valid and then get bit
     hali2cClock(0);
-    hali2cWait(1);
+    // hali2cWait(1);
     hali2cClock(1);
-    hali2cWait(1);
+    // hali2cWait(1);
 
-    return OCM_SDA;
-}
-
-/*********************************************************************
- * @fn      hali2cSendDeviceAddress
- * @brief   Send onlythe device address. Do ack polling
- *
- * @param   void
- * @return  none
- */
-STATIC void hali2cSendDeviceAddress(uint8 address) {
-    uint8 retry = HAL_I2C_RETRY_CNT;
-
-    do {
-        hali2cStart();
-        if (hali2cSendByte(address)) // do ack polling...
-        {
-            break;
-        }
-    } while (--retry);
+    return P0_6;
 }
 
 // http://e2e.ti.com/support/wireless-connectivity/zigbee-and-thread/f/158/t/140917
@@ -470,7 +296,7 @@ int8 I2C_ReadMultByte(uint8 address, uint8 reg, uint8 *buffer, uint16 len) {
         return I2C_ERROR;
 
     /* Send RESTART condition */
-    hali2cStart();
+    hali2cRepeatStart();
 
     /* Set direction of transmission */
     // Reset the address bit0 for read
@@ -484,13 +310,13 @@ int8 I2C_ReadMultByte(uint8 address, uint8 reg, uint8 *buffer, uint16 len) {
         // SCL may be high. set SCL low. If SDA goes high when input
         // mode is set the slave won't see a STOP
         hali2cClock(0);
-        OCM_DATA_HIGH();
+        SDA_HIGH();
         buffer[i] = hali2cReceiveByte();
         // Acknowledgement if not sending last byte
         if (len > 1) {
             hali2cWrite(SMB_ACK); // write leaves SCL high
         }
-
+        
         // increment buffer register
         i++;
         // Decrement the read bytes counter
@@ -499,14 +325,14 @@ int8 I2C_ReadMultByte(uint8 address, uint8 reg, uint8 *buffer, uint16 len) {
 
     // condition SDA one more time...
     hali2cClock(0);
-    OCM_DATA_HIGH();
+    SDA_HIGH();
     hali2cWrite(SMB_NAK);
 
     hali2cStop();
 
     // condition SDA one more time...
     //   hali2cClock(0);
-    //   OCM_DATA_HIGH();
+    //   SDA_HIGH();
     //   buffer[i] = hali2cReceiveByte();
     //   hali2cWrite(SMB_NAK);
 
@@ -532,11 +358,9 @@ int8 I2C_WriteMultByte(uint8 address, uint8 reg, uint8 *buffer, uint16 len) {
 
     /* Send START condition */
     hali2cStart();
-    // return I2C_ERROR;
-
+    
     /* Set direction of transmission */
     // Reset the address bit0 for write
-    // _address &= OCM_WRITE;
     _address = ((address << 1) | OCM_WRITE);
 
     /* Send Address  and get acknowledgement from slave*/
@@ -553,7 +377,7 @@ int8 I2C_WriteMultByte(uint8 address, uint8 reg, uint8 *buffer, uint16 len) {
         // SCL may be high. set SCL low. If SDA goes high when input
         // mode is set the slave won't see a STOP
         hali2cClock(0);
-        OCM_DATA_HIGH();
+        SDA_HIGH();
 
         /* Send Address  and get acknowledgement from slave*/
         if (!hali2cSendByte(buffer[i]))
