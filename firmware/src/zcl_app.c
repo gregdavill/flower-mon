@@ -1,42 +1,38 @@
 
+#include "zcl_app.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "AF.h"
+#include "Debug.h"
 #include "OSAL.h"
 #include "OSAL_Clock.h"
 #include "OSAL_PwrMgr.h"
+#include "OnBoard.h"
 #include "ZComDef.h"
 #include "ZDApp.h"
 #include "ZDNwkMgr.h"
 #include "ZDObject.h"
-#include "math.h"
-
-#include "nwk_util.h"
-#include "zcl.h"
-#include "zcl_app.h"
-#include "zcl_diagnostic.h"
-#include "zcl_general.h"
-#include "zcl_lighting.h"
-#include "zcl_ms.h"
-
 #include "bdb.h"
 #include "bdb_interface.h"
 #include "gp_interface.h"
-
-#include "Debug.h"
-
-#include "OnBoard.h"
+#include "math.h"
+#include "nwk_util.h"
+#include "zcl.h"
+#include "zcl_diagnostic.h"
+#include "zcl_general.h"
+#include "zcl_ms.h"
 
 /* HAL */
-#include "bme280.h"
-#include "ds18b20.h"
-#include "hal_adc.h"
-#include "hal_drivers.h"
-#include "hal_i2c.h"
-#include "hal_key.h"
-#include "hal_led.h"
-
 #include "battery.h"
 #include "commissioning.h"
 #include "factory_reset.h"
+#include "hal_adc.h"
+#include "hal_drivers.h"
+#include "hal_key.h"
+#include "hal_led.h"
+#include "inttempsens.h"
 #include "utils.h"
 #include "version.h"
 
@@ -44,24 +40,6 @@
  * MACROS
  */
 #define HAL_KEY_CODE_RELEASE_KEY HAL_KEY_CODE_NOKEY
-
-// use led4 as output pin, osal will shitch it low when go to PM
-#define POWER_ON_SENSORS()                                                                                                                 \
-    do {                                                                                                                                   \
-        HAL_TURN_ON_LED4();                                                                                                                \
-        st(T3CTL |= BV(4););                                                                                                               \
-        IO_PUD_PORT(OCM_CLK_PORT, IO_PUP);                                                                                                 \
-        IO_PUD_PORT(OCM_DATA_PORT, IO_PUP);                                                                                                \
-        IO_PUD_PORT(DS18B20_PORT, IO_PUP);                                                                                                 \
-    } while (0)
-#define POWER_OFF_SENSORS()                                                                                                                \
-    do {                                                                                                                                   \
-        HAL_TURN_OFF_LED4();                                                                                                               \
-        st(T3CTL &= ~BV(4); T3CTL |= BV(2););                                                                                              \
-        IO_PUD_PORT(OCM_CLK_PORT, IO_PDN);                                                                                                 \
-        IO_PUD_PORT(OCM_DATA_PORT, IO_PDN);                                                                                                \
-        IO_PUD_PORT(DS18B20_PORT, IO_PDN);                                                                                                 \
-    } while (0)
 
 /*********************************************************************
  * CONSTANTS
@@ -75,7 +53,6 @@
  * GLOBAL VARIABLES
  */
 
-extern bool requestNewTrustCenterLinkKey;
 byte zclApp_TaskID;
 
 /*********************************************************************
@@ -87,14 +64,11 @@ byte zclApp_TaskID;
  */
 
 static uint8 currentSensorsReadingPhase = 0;
+int16 temp_old = 0;
+int16 tempTr = 1;
+int16 startWork = 0;
+bool pushBut = false;
 
-afAddrType_t inderect_DstAddr = {.addrMode = (afAddrMode_t)AddrNotPresent, .endPoint = 0, .addr.shortAddr = 0};
-struct bme280_data bme_results;
-struct bme280_dev bme_dev = {.dev_id = BME280_I2C_ADDR_PRIM,
-                             .intf = BME280_I2C_INTF,
-                             .read = I2C_ReadMultByte,
-                             .write = I2C_WriteMultByte,
-                             .delay_ms = user_delay_ms};
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
@@ -102,78 +76,102 @@ static void zclApp_HandleKeys(byte shift, byte keys);
 static void zclApp_Report(void);
 
 static void zclApp_ReadSensors(void);
-static void zclApp_InitBME280(struct bme280_dev *dev);
-static void zclApp_ReadBME280(struct bme280_dev *dev);
-static void zclApp_ReadDS18B20(void);
-static void zclApp_ReadLumosity(void);
+#ifndef PWS_MINI
+static void zclApp_IntTempSens(void);
+#endif
 static void zclApp_ReadSoilHumidity(void);
 static void zclApp_InitPWM(void);
+
+static void zcl_BasicResetCB(void);
+
+static void zclApp_EnableSensorPWR(void){
+    LREP("Powering Up Sensors\r\n");
+    P1DIR |= BV(1);
+    P1 |= BV(1);
+
+    // tri state P0.4 (soil humidity pin)
+    P0DIR &= ~BV(4);
+    P0INP |= BV(4);
+}
+
+static void zclApp_DisableSensorPWR(void){
+    LREP("Powering Down Sensors \r\n");
+    P1DIR |= BV(0) | BV(1) | BV(2) | BV(5) | BV(6) | BV(7);
+    P1 &= ~(BV(0) | BV(1) | BV(2) | BV(5) | BV(6) | BV(7));
+    
+    P0DIR |= BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(5) | BV(6) | BV(7);
+    P0 &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(4) | BV(5) | BV(6) | BV(7));
+
+    P2DIR |= BV(1) | BV(2);
+    P2 &= ~(BV(1) | BV(2));
+}
+
+
 
 /*********************************************************************
  * ZCL General Profile Callback table
  */
 static zclGeneral_AppCallbacks_t zclApp_CmdCallbacks = {
-    NULL, // Basic Cluster Reset command
-    NULL, // Identify Trigger Effect command
-    NULL, // On/Off cluster commands
-    NULL, // On/Off cluster enhanced command Off with Effect
-    NULL, // On/Off cluster enhanced command On with Recall Global Scene
-    NULL, // On/Off cluster enhanced command On with Timed Off
-    NULL, // RSSI Location command
-    NULL  // RSSI Location Response command
+    zcl_BasicResetCB,  // Basic Cluster Reset command
+    NULL,              // Identify Trigger Effect command
+    NULL,              // On/Off cluster commands
+    NULL,              // On/Off cluster enhanced command Off with Effect
+    NULL,              // On/Off cluster enhanced command On with Recall Global Scene
+    NULL,              // On/Off cluster enhanced command On with Timed Off
+    NULL,              // RSSI Location command
+    NULL               // RSSI Location Response command
 };
 
 void zclApp_Init(byte task_id) {
-    IO_IMODE_PORT_PIN(SOIL_MOISTURE_PORT, SOIL_MOISTURE_PIN, IO_TRI); // tri state p0.4 (soil humidity pin)
-    IO_IMODE_PORT_PIN(LUMOISITY_PORT, LUMOISITY_PIN, IO_TRI);         // tri state p0.7 (lumosity pin)
-    IO_PUD_PORT(OCM_CLK_PORT, IO_PUP);
-    IO_PUD_PORT(OCM_DATA_PORT, IO_PUP)
-    IO_PUD_PORT(DS18B20_PORT, IO_PUP);
-    POWER_OFF_SENSORS();
+    LREP("Started build %s \r\n", zclApp_DateCodeNT);
 
-    HalI2CInit();
+    zclApp_EnableSensorPWR();
+
+
+    zclApp_DisableSensorPWR();
+
+
     zclApp_InitPWM();
-    
-    // this is important to allow connects throught routers
-    // to make this work, coordinator should be compiled with this flag #define TP2_LEGACY_ZC
-    requestNewTrustCenterLinkKey = FALSE;
 
     zclApp_TaskID = task_id;
+    bdb_RegisterSimpleDescriptor(&zclApp_Desc);
 
-    zclGeneral_RegisterCmdCallbacks(1, &zclApp_CmdCallbacks);
-    zcl_registerAttrList(zclApp_FirstEP.EndPoint, zclApp_AttrsFirstEPCount, zclApp_AttrsFirstEP);
-    bdb_RegisterSimpleDescriptor(&zclApp_FirstEP);
+    zclGeneral_RegisterCmdCallbacks(zclApp_Desc.EndPoint, &zclApp_CmdCallbacks);
 
-    zcl_registerAttrList(zclApp_SecondEP.EndPoint, zclApp_AttrsSecondEPCount, zclApp_AttrsSecondEP);
-    bdb_RegisterSimpleDescriptor(&zclApp_SecondEP);
+    /* Run an inital sensor measurement */
+    zclSampleTemperatureSensor_ResetAttributesToDefaultValues();
+    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 1000);
+    user_delay_ms(10);
+    
+    zcl_registerAttrList(zclApp_Desc.EndPoint, zclApp_NumAttributes, zclApp_AttrsFirstEP);
 
     zcl_registerForMsg(zclApp_TaskID);
 
     // Register for all key events - This app will handle all key events
     RegisterForKeys(zclApp_TaskID);
-    LREP("Started build %s \r\n", zclApp_DateCodeNT);
 
-    osal_start_reload_timer(zclApp_TaskID, APP_REPORT_EVT, APP_REPORT_DELAY);
+
+    osal_start_reload_timer(zclApp_TaskID, APP_REPORT_EVT, ((uint32) (1000UL * 45)));
 }
 
 uint16 zclApp_event_loop(uint8 task_id, uint16 events) {
     afIncomingMSGPacket_t *MSGpkt;
 
-    (void)task_id; // Intentionally unreferenced parameter
+    (void)task_id;  // Intentionally unreferenced parameter
     if (events & SYS_EVENT_MSG) {
         while ((MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive(zclApp_TaskID))) {
             switch (MSGpkt->hdr.event) {
-            case KEY_CHANGE:
-                zclApp_HandleKeys(((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys);
-                break;
-            case ZCL_INCOMING_MSG:
-                if (((zclIncomingMsg_t *)MSGpkt)->attrCmd) {
-                    osal_mem_free(((zclIncomingMsg_t *)MSGpkt)->attrCmd);
-                }
-                break;
+                case KEY_CHANGE:
+                    zclApp_HandleKeys(((keyChange_t *)MSGpkt)->state, ((keyChange_t *)MSGpkt)->keys);
+                    break;
+                case ZCL_INCOMING_MSG:
+                    if (((zclIncomingMsg_t *)MSGpkt)->attrCmd) {
+                        osal_mem_free(((zclIncomingMsg_t *)MSGpkt)->attrCmd);
+                    }
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
             // Release the memory
             osal_msg_deallocate((uint8 *)MSGpkt);
@@ -202,94 +200,111 @@ static void zclApp_HandleKeys(byte portAndAction, byte keyCode) {
     LREP("zclApp_HandleKeys portAndAction=0x%X keyCode=0x%X\r\n", portAndAction, keyCode);
     zclFactoryResetter_HandleKeys(portAndAction, keyCode);
     zclCommissioning_HandleKeys(portAndAction, keyCode);
-    if (portAndAction & HAL_KEY_PRESS) {
-        LREPMaster("Key press\r\n");
-        osal_start_timerEx(zclApp_TaskID, APP_REPORT_EVT, 200);
+    if (portAndAction & HAL_KEY_RELEASE) {
+        LREPMaster("Key Release\r\n");  
+        if (bdbAttributes.bdbNodeIsOnANetwork) {
+            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 200);
+        } else {
+            osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 1000);
+        }
+        HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
+        pushBut = true;
     }
 }
 static void zclApp_InitPWM(void) {
-    PERCFG &= ~(0x20); // Select Timer 3 Alternative 1 location
+    PERCFG &= ~(0x20);  // Select Timer 3 Alternative 1 location
     P2SEL |= 0x20;
-    P2DIR |= 0xC0;  // Give priority to Timer 1 channel2-3
-    P1SEL |= BV(4); // Set P1_4 to peripheral, Timer 1,channel 2
+    P2DIR |= 0xC0;   // Give priority to Timer 1 channel2-3
+    P1SEL |= BV(4);  // Set P1_4 to peripheral, Timer 1,channel 2
     P1DIR |= BV(4);
 
-    T3CTL &= ~BV(4); // Stop timer 3 (if it was running)
-    T3CTL |= BV(2);  // Clear timer 3
-    T3CTL &= ~0x08;  // Disable Timer 3 overflow interrupts
-    T3CTL |= 0x03;   // Timer 3 mode = 3 - Up/Down
+    T3CTL &= ~BV(4);  // Stop timer 3 (if it was running)
+    T3CTL |= BV(2);   // Clear timer 3
+    T3CTL &= ~0x08;   // Disable Timer 3 overflow interrupts
+    T3CTL |= 0x03;    // Timer 3 mode = 3 - Up/Down
 
-    T3CCTL1 &= ~0x40; // Disable channel 0 interrupts
-    T3CCTL1 |= BV(2); // Ch0 mode = compare
-    T3CCTL1 |= BV(4); // Ch0 output compare mode = toggle on compare
+    T3CCTL1 &= ~0x40;  // Disable channel 0 interrupts
+    T3CCTL1 |= BV(2);  // Ch0 mode = compare
+    T3CCTL1 |= BV(4);  // Ch0 output compare mode = toggle on compare
 
-    T3CTL &= ~(BV(7) | BV(6) | BV(5)); // Clear Prescaler divider value
-    T3CC0 = 4;                         // Set ticks
+    T3CTL &= ~(BV(7) | BV(6) | BV(5));  // Clear Prescaler divider value
+    T3CC0 = 4;                          // Set ticks
 }
 
 static void zclApp_ReadSensors(void) {
-    LREP("currentSensorsReadingPhase %d\r\n", currentSensorsReadingPhase);
     /**
      * FYI: split reading sensors into phases, so single call wouldn't block processor
      * for extensive ammount of time
      * */
-    HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
+    //HalLedSet(HAL_LED_1, HAL_LED_MODE_TOGGLE);
+    //HalLedSet(HAL_LED_1, HAL_LED_MODE_TOGGLE);
     switch (currentSensorsReadingPhase++) {
-    case 0:
-        POWER_ON_SENSORS();
-        zclApp_ReadLumosity();
-        break;
+        case 0:
+            zclApp_EnableSensorPWR();
+            break;
 
-    case 1:
-        zclBattery_Report();
-        zclApp_ReadSoilHumidity();
-        break;
-    case 2:
-        zclApp_InitBME280(&bme_dev);
-        break;
+        case 1:
+            zclBattery_Report();
+            T3CTL |= BV(4); /* Start Timer */
+            break;
+        
+        case 2:
+            osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_HOLD);
+            zclApp_ReadSoilHumidity();
+            osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_CONSERVE);
+            break;
 
-    case 3:
-        zclApp_ReadDS18B20();
-        break;
-    default:
-        POWER_OFF_SENSORS();
-        currentSensorsReadingPhase = 0;
-        break;
+        case 3:
+            zclApp_IntTempSens();
+            break;
+        
+        case 4:
+            //zclApp_DS18S20Sens();
+            zclApp_DisableSensorPWR();
+            break;
+        default:
+            currentSensorsReadingPhase = 0;
+
+            if(pushBut){
+                // Possible to force update of attrs?
+            }
+            pushBut = false;
+            osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_CONSERVE);
+            break;
     }
+    
     if (currentSensorsReadingPhase != 0) {
         osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 10);
     }
 }
 
 static void zclApp_ReadSoilHumidity(void) {
+    
     zclApp_SoilHumiditySensor_MeasuredValueRawAdc = adcReadSampled(SOIL_MOISTURE_PIN, HAL_ADC_RESOLUTION_14, HAL_ADC_REF_AVDD, 5);
+
+    T3CTL &= ~BV(4); /* Stop Timer */
+    T3CTL |= BV(2); /* Clear counter */
+
     // FYI: https://docs.google.com/spreadsheets/d/1qrFdMTo0ZrqtlGUoafeB3hplhU3GzDnVWuUK4M9OgNo/edit?usp=sharing
     uint16 soilHumidityMinRangeAir = (uint16)AIR_COMPENSATION_FORMULA(zclBattery_RawAdc);
     uint16 soilHumidityMaxRangeWater = (uint16)WATER_COMPENSATION_FORMULA(zclBattery_RawAdc);
     LREP("soilHumidityMinRangeAir=%d soilHumidityMaxRangeWater=%d\r\n", soilHumidityMinRangeAir, soilHumidityMaxRangeWater);
-    zclApp_SoilHumiditySensor_MeasuredValue =
+    uint16 zclApp_SoilHumiditySensor_MeasuredValue =
         (uint16)mapRange(soilHumidityMinRangeAir, soilHumidityMaxRangeWater, 0.0, 10000.0, zclApp_SoilHumiditySensor_MeasuredValueRawAdc);
     LREP("ReadSoilHumidity raw=%d mapped=%d\r\n", zclApp_SoilHumiditySensor_MeasuredValueRawAdc, zclApp_SoilHumiditySensor_MeasuredValue);
-
-    bdb_RepChangedAttrValue(zclApp_FirstEP.EndPoint, SOIL_HUMIDITY, ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE);
+    
+    bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, SOIL_HUMIDITY, 0x0000);
 }
 
-static void zclApp_ReadDS18B20(void) {
+static void zclApp_IntTempSens(void) {
     int16 temp = readTemperature();
-    if (temp != 1) {
-        zclApp_DS18B20_MeasuredValue = temp;
-        LREP("ReadDS18B20 t=%d\r\n", zclApp_DS18B20_MeasuredValue);
-        bdb_RepChangedAttrValue(zclApp_SecondEP.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-    } else {
-        LREPMaster("ReadDS18B20 error\r\n");
-    }
-}
-
-static void zclApp_ReadLumosity(void) {
-    zclApp_IlluminanceSensor_MeasuredValueRawAdc = adcReadSampled(LUMOISITY_PIN, HAL_ADC_RESOLUTION_14, HAL_ADC_REF_AVDD, 5);
-    zclApp_IlluminanceSensor_MeasuredValue = zclApp_IlluminanceSensor_MeasuredValueRawAdc;
-    bdb_RepChangedAttrValue(zclApp_FirstEP.EndPoint, ILLUMINANCE, ATTRID_MS_ILLUMINANCE_MEASURED_VALUE);
-    LREP("IlluminanceSensor_MeasuredValue value=%d\r\n", zclApp_IlluminanceSensor_MeasuredValue);
+    temp = temp / 100;
+    temp = temp * 100;
+    zclApp_Temperature_Sensor_MeasuredValue = temp;
+    
+    LREP("ReadIntTempSens t=%d\r\n", zclApp_Temperature_Sensor_MeasuredValue);
+    
+    bdb_RepChangedAttrValue(zclApp_Desc.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
 }
 
 static void _delay_us(uint16 microSecs) {
@@ -307,48 +322,24 @@ static void _delay_us(uint16 microSecs) {
 
 void user_delay_ms(uint32_t period) { _delay_us(1000 * period); }
 
-static void zclApp_InitBME280(struct bme280_dev *dev) {
-    int8_t rslt = bme280_init(dev);
-    if (rslt == BME280_OK) {
-        uint8_t settings_sel;
-        dev->settings.osr_h = BME280_OVERSAMPLING_1X;
-        dev->settings.osr_p = BME280_OVERSAMPLING_16X;
-        dev->settings.osr_t = BME280_OVERSAMPLING_2X;
-        dev->settings.filter = BME280_FILTER_COEFF_16;
-        dev->settings.standby_time = BME280_STANDBY_TIME_62_5_MS;
-
-        settings_sel = BME280_OSR_PRESS_SEL;
-        settings_sel |= BME280_OSR_TEMP_SEL;
-        settings_sel |= BME280_OSR_HUM_SEL;
-        settings_sel |= BME280_STANDBY_SEL;
-        settings_sel |= BME280_FILTER_SEL;
-        rslt = bme280_set_sensor_settings(settings_sel, dev);
-        rslt = bme280_set_sensor_mode(BME280_NORMAL_MODE, dev);
-
-        uint32_t req_delay = bme280_cal_meas_delay(&dev->settings);
-        dev->delay_ms(req_delay);
-
-        zclApp_ReadBME280(dev);
-    } else {
-        LREP("ReadBME280 init error %d\r\n", rslt);
-    }
+static void zclApp_Report(void) { 
+    osal_pwrmgr_task_state(zcl_TaskID, PWRMGR_HOLD);
+    osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 10); 
 }
-static void zclApp_ReadBME280(struct bme280_dev *dev) {
-    int8_t rslt = bme280_get_sensor_data(BME280_ALL, &bme_results, dev);
-    if (rslt == BME280_OK) {
-        zclApp_Temperature_Sensor_MeasuredValue = (int16)bme_results.temperature;
-        zclApp_PressureSensor_ScaledValue = (int16)(pow(10.0, (double)zclApp_PressureSensor_Scale) * (double)bme_results.pressure);
-        zclApp_PressureSensor_MeasuredValue = bme_results.pressure / 100;
-        LREP("ReadBME280 t=%ld, p=%ld h=%ld\r\n", bme_results.temperature, bme_results.pressure, bme_results.humidity);
-        zclApp_HumiditySensor_MeasuredValue = (uint16)(bme_results.humidity * 100 / 1024);
-        bdb_RepChangedAttrValue(zclApp_FirstEP.EndPoint, TEMP, ATTRID_MS_TEMPERATURE_MEASURED_VALUE);
-        bdb_RepChangedAttrValue(zclApp_FirstEP.EndPoint, PRESSURE, ATTRID_MS_PRESSURE_MEASUREMENT_MEASURED_VALUE);
-        bdb_RepChangedAttrValue(zclApp_FirstEP.EndPoint, HUMIDITY, ATTRID_MS_RELATIVE_HUMIDITY_MEASURED_VALUE);
-    } else {
-        LREP("ReadBME280 read error %d\r\n", rslt);
-    }
+
+/*********************************************************************
+ * @fn      zclSampleTemperatureSensor_BasicResetCB
+ *
+ * @brief   Callback from the ZCL General Cluster Library
+ *          to set all the Basic Cluster attributes to default values.
+ *
+ * @param   none
+ *
+ * @return  none
+ */
+static void zcl_BasicResetCB(void) {
+    zclSampleTemperatureSensor_ResetAttributesToDefaultValues();
 }
-static void zclApp_Report(void) { osal_start_timerEx(zclApp_TaskID, APP_READ_SENSORS_EVT, 10); }
 
 /****************************************************************************
 ****************************************************************************/

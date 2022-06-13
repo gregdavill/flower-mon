@@ -1420,7 +1420,7 @@
                 </option>
                 <option>
                     <name>OGChipConfigPath</name>
-                    <state>C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\8051\bin\..\config\devices\Texas Instruments\CC25xx\3x\CC2530F256.i51</state>
+                    <state>C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1_2\8051\bin\..\config\devices\Texas Instruments\CC25xx\3x\CC2530F256.i51</state>
                 </option>
             </data>
         </settings>
@@ -1446,7 +1446,7 @@
                 </option>
                 <option>
                     <name>CCDefines</name>
-                    <state>HAL_BOARD_FLOWER</state>
+                    <state>HAL_BOARD_PWS</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -2295,7 +2295,7 @@
             <name>$PROJ_DIR$\..\vendor\BME280_driver\bme280_defs.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\vendor\\zstack-lib\hal_key.c</name>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_key.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_key.h</name>
@@ -2994,6 +2994,12 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\vendor\zstack-lib\hal_i2c.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\inttempsens.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\vendor\zstack-lib\inttempsens.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\vendor\zstack-lib\utils.c</name>

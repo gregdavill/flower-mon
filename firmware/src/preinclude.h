@@ -26,22 +26,19 @@
 #define HAL_BUZZER FALSE
 
 #define HAL_LED TRUE
-#define HAL_I2C TRUE
+//#define HAL_I2C TRUE
 #define BLINK_LEDS TRUE
 
 
-//one of this boards
-#define HAL_BOARD_FLOWER
-// #define HAL_BOARD_CHDTECH_DEV
 
-#if !defined(HAL_BOARD_FLOWER) && !defined(HAL_BOARD_CHDTECH_DEV)
+
+#if !defined HAL_BOARD_PWS
 #error "Board type must be defined"
 #endif
 
 #define BDB_MAX_CLUSTERENDPOINTS_REPORTING 10
 
-#define BME280_32BIT_ENABLE
-//TODO: refactor ds18b20 driver
+
 #define DS18B20_PORT 1
 #define DS18B20_PIN 3
 
@@ -49,34 +46,38 @@
 #define TSENS_BV BV(3)
 #define TSENS_DIR P1DIR
 
+
 #define SOIL_MOISTURE_PORT 0
 #define SOIL_MOISTURE_PIN 4
 
-#define LUMOISITY_PORT 0
-#define LUMOISITY_PIN 7
 
-
-#if defined(HAL_BOARD_FLOWER)
-#define POWER_SAVING
-// #define DO_DEBUG_UART
-#elif defined(HAL_BOARD_CHDTECH_DEV)
-#define DO_DEBUG_UART
-// #define DO_DEBUG_MT
-
-#endif
-
-
-//i2c bme280
 #define OCM_CLK_PORT 0
 #define OCM_DATA_PORT 0
 #define OCM_CLK_PIN 5
 #define OCM_DATA_PIN 6
 
 
+#define POWER_SAVING
+#define DO_DEBUG_UART
+
+
+//#define ZHA_COMPOTABLE
+//#define PWS_MINI
+//#define REPORT_0_5HOUR
+#define REPORT_1HOUR
+//#define REPORT_1_5HOURS
+//#define REPORT_2HOURS
+//#define REPORT_3HOURS
+
+
+#define APP_TX_POWER TX_PWR_PLUS_3
+
 #ifdef DO_DEBUG_UART
 #define HAL_UART TRUE
-#define HAL_UART_DMA 1
-#define INT_HEAP_LEN (2685 - 0x4B - 0xBB)
+#define HAL_UART_DMA 2
+//#define HAL_UART_ISR 2
+#define UART_PORT HAL_UART_PORT_1
+#define INT_HEAP_LEN (2685 - 0x4B - 0xBB - 0x80)
 #endif
 
 #ifdef DO_DEBUG_MT
@@ -102,14 +103,7 @@
 
 #endif
 
-
-
-#if defined(HAL_BOARD_FLOWER)
 #define HAL_KEY_P2_INPUT_PINS BV(0)
-#elif defined(HAL_BOARD_CHDTECH_DEV)
-#define HAL_KEY_P0_INPUT_PINS BV(1)
-#define HAL_KEY_P2_INPUT_PINS BV(0)
-#endif
 
 #include "hal_board_cfg.h"
 
