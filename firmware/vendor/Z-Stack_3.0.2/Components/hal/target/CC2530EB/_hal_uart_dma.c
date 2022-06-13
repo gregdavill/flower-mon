@@ -664,6 +664,8 @@ static void HalUARTPollDMA(void)
       // because while the shadow was valid, DMA ISR cannot be triggered
       // to cause concurrent access to this variable.
       dmaCfg.txShdwValid = FALSE;
+    
+      evt |= HAL_UART_TX_IDLE;
     }
   }
   
