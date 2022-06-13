@@ -7,8 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUFFLEN 128
-#define BUFFER 100
+#define BUFFLEN 256
+#define BUFFER 256
 
 #define PRINT_NUMBER_TYPE long
 
@@ -31,7 +31,7 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0')
 
-extern halUARTCfg_t halUARTConfig;
+//extern halUARTCfg_t halUARTConfig;
 
 void vprint(const char *fmt, va_list argp);
 extern bool DebugInit(void);

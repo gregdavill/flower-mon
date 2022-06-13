@@ -1,4 +1,5 @@
 #include "commissioning.h"
+
 #include "Debug.h"
 #include "OSAL_PwrMgr.h"
 #include "ZDApp.h"
@@ -17,14 +18,14 @@ uint32 rejoinDelay = APP_COMMISSIONING_END_DEVICE_REJOIN_START_DELAY;
 uint8 zclCommissioning_TaskId = 0;
 
 #ifndef APP_TX_POWER
-    #define APP_TX_POWER TX_PWR_PLUS_4
+#define APP_TX_POWER TX_PWR_PLUS_4
 #endif
 
 void zclCommissioning_Init(uint8 task_id) {
     zclCommissioning_TaskId = task_id;
 
     bdb_RegisterCommissioningStatusCB(zclCommissioning_ProcessCommissioningStatus);
-    bdb_RegisterBindNotificationCB(zclCommissioning_BindNotification);
+    //bdb_RegisterBindNotificationCB(zclCommissioning_BindNotification);
 
     ZMacSetTransmitPower(APP_TX_POWER);
 
@@ -42,65 +43,66 @@ static void zclCommissioning_ResetBackoffRetry(void) {
 static void zclCommissioning_OnConnect(void) {
     LREPMaster("zclCommissioning_OnConnect \r\n");
     zclCommissioning_ResetBackoffRetry();
-    osal_start_timerEx(zclCommissioning_TaskId, APP_COMMISSIONING_CLOCK_DOWN_POLING_RATE_EVT, 10 * 1000);
+    osal_start_timerEx(zclCommissioning_TaskId, APP_COMMISSIONING_CLOCK_DOWN_POLING_RATE_EVT, 30 * 1000);
 }
 
 static void zclCommissioning_ProcessCommissioningStatus(bdbCommissioningModeMsg_t *bdbCommissioningModeMsg) {
     LREP("bdbCommissioningMode=%d bdbCommissioningStatus=%d bdbRemainingCommissioningModes=0x%X\r\n",
          bdbCommissioningModeMsg->bdbCommissioningMode, bdbCommissioningModeMsg->bdbCommissioningStatus,
          bdbCommissioningModeMsg->bdbRemainingCommissioningModes);
+
     switch (bdbCommissioningModeMsg->bdbCommissioningMode) {
-    case BDB_COMMISSIONING_INITIALIZATION:
-        switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
-        case BDB_COMMISSIONING_NO_NETWORK:
-            LREP("No network\r\n");
-            HalLedBlink(HAL_LED_1, 3, 50, 500);
-            break;
-        case BDB_COMMISSIONING_NETWORK_RESTORED:
-            zclCommissioning_OnConnect();
-            break;
-        default:
-            break;
-        }
-        break;
-    case BDB_COMMISSIONING_NWK_STEERING:
-        switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
-        case BDB_COMMISSIONING_SUCCESS:
-            HalLedBlink(HAL_LED_1, 5, 50, 500);
-            LREPMaster("BDB_COMMISSIONING_SUCCESS\r\n");
-            zclCommissioning_OnConnect();
-            break;
-
-        default:
-            HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
-            break;
-        }
-
-        break;
-
-    case BDB_COMMISSIONING_PARENT_LOST:
-        LREPMaster("BDB_COMMISSIONING_PARENT_LOST\r\n");
-        switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
-        case BDB_COMMISSIONING_NETWORK_RESTORED:
-            zclCommissioning_ResetBackoffRetry();
-            break;
-
-        default:
-            HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
-            // // Parent not found, attempt to rejoin again after a exponential backoff delay
-            LREP("rejoinsLeft %d rejoinDelay=%ld\r\n", rejoinsLeft, rejoinDelay);
-            if (rejoinsLeft > 0) {
-                rejoinDelay *= APP_COMMISSIONING_END_DEVICE_REJOIN_BACKOFF;
-                rejoinsLeft -= 1;
-            } else {
-                rejoinDelay = APP_COMMISSIONING_END_DEVICE_REJOIN_MAX_DELAY;
+        case BDB_COMMISSIONING_INITIALIZATION:
+            switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
+                case BDB_COMMISSIONING_NO_NETWORK:
+                    LREP("No network\r\n");
+                    HalLedBlink(HAL_LED_1, 2, 100, 800);
+                    break;
+                case BDB_COMMISSIONING_NETWORK_RESTORED:
+                    zclCommissioning_OnConnect();
+                    break;
+                default:
+                    break;
             }
-            osal_start_timerEx(zclCommissioning_TaskId, APP_COMMISSIONING_END_DEVICE_REJOIN_EVT, rejoinDelay);
             break;
-        }
-        break;
-    default:
-        break;
+        case BDB_COMMISSIONING_NWK_STEERING:
+            switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
+                case BDB_COMMISSIONING_SUCCESS:
+                    HalLedBlink(HAL_LED_1, 5, 80, 600);
+                    LREPMaster("BDB_COMMISSIONING_SUCCESS\r\n");
+                    zclCommissioning_OnConnect();
+                    break;
+
+                default:
+                    HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
+                    break;
+            }
+
+            break;
+
+        case BDB_COMMISSIONING_PARENT_LOST:
+            LREPMaster("BDB_COMMISSIONING_PARENT_LOST\r\n");
+            switch (bdbCommissioningModeMsg->bdbCommissioningStatus) {
+                case BDB_COMMISSIONING_NETWORK_RESTORED:
+                    zclCommissioning_ResetBackoffRetry();
+                    break;
+
+                default:
+                    HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
+                    // // Parent not found, attempt to rejoin again after a exponential backoff delay
+                    LREP("rejoinsLeft %d rejoinDelay=%ld\r\n", rejoinsLeft, rejoinDelay);
+                    if (rejoinsLeft > 0) {
+                        rejoinDelay *= APP_COMMISSIONING_END_DEVICE_REJOIN_BACKOFF;
+                        rejoinsLeft -= 1;
+                    } else {
+                        rejoinDelay = APP_COMMISSIONING_END_DEVICE_REJOIN_MAX_DELAY;
+                    }
+                    osal_start_timerEx(zclCommissioning_TaskId, APP_COMMISSIONING_END_DEVICE_REJOIN_EVT, rejoinDelay);
+                    break;
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -112,6 +114,7 @@ static void zclCommissioning_ProcessIncomingMsg(zclIncomingMsg_t *pInMsg) {
 
 void zclCommissioning_Sleep(uint8 allow) {
     LREP("zclCommissioning_Sleep %d\r\n", allow);
+    NLME_SetPollRate(500);
 #if defined(POWER_SAVING)
     if (allow) {
         NLME_SetPollRate(0);
@@ -126,23 +129,22 @@ uint16 zclCommissioning_event_loop(uint8 task_id, uint16 events) {
         devStates_t zclApp_NwkState;
         afIncomingMSGPacket_t *MSGpkt;
         while ((MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive(zclCommissioning_TaskId))) {
-
             switch (MSGpkt->hdr.event) {
-            case ZDO_STATE_CHANGE:
-                HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
-                zclApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
-                LREP("NwkState=%d\r\n", zclApp_NwkState);
-                if (zclApp_NwkState == DEV_END_DEVICE) {
-                    HalLedSet(HAL_LED_1, HAL_LED_MODE_OFF);
-                }
-                break;
+                case ZDO_STATE_CHANGE:
+                    HalLedSet(HAL_LED_1, HAL_LED_MODE_BLINK);
+                    zclApp_NwkState = (devStates_t)(MSGpkt->hdr.status);
+                    LREP("NwkState=%d\r\n", zclApp_NwkState);
+                    if (zclApp_NwkState == DEV_END_DEVICE) {
+                        HalLedSet(HAL_LED_1, HAL_LED_MODE_OFF);
+                    }
+                    break;
 
-            case ZCL_INCOMING_MSG:
-                zclCommissioning_ProcessIncomingMsg((zclIncomingMsg_t *)MSGpkt);
-                break;
+                case ZCL_INCOMING_MSG:
+                    zclCommissioning_ProcessIncomingMsg((zclIncomingMsg_t *)MSGpkt);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
             // Release the memory
@@ -187,7 +189,7 @@ void zclCommissioning_HandleKeys(uint8 portAndAction, uint8 keyCode) {
         }
 #endif
     }
-    #if defined(POWER_SAVING)
-        NLME_SetPollRate(1);
-    #endif
+#if defined(POWER_SAVING)
+    NLME_SetPollRate(0);
+#endif
 }

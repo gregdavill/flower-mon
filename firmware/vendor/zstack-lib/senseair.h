@@ -1,7 +1,6 @@
 #ifndef SENSEAIR_H
 #define SENSEAIR_H
-
-#include "air_quality.h"
-
-extern zclAirSensor_t sense_air_dev;
-#endif //SENSEAIR_H
+extern void SenseAir_RequestMeasure(void);
+extern uint16 SenseAir_Read(void);
+extern void SenseAir_SetABC(bool isEnabled);
+#endif

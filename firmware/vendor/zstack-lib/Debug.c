@@ -2,11 +2,12 @@
 #include "DebugTrace.h"
 #include "MT.h"
 #include "OSAL.h"
+#include "OSAL_PwrMgr.h"
 #include "OSAL_Memory.h"
 
 
 void vprint(const char *fmt, va_list argp) {
-    uint8 string[100];
+    uint8 string[256];
     if (0 < vsprintf((char *)string, fmt, argp)) // build string
     {
         LREPMaster(string);
@@ -14,7 +15,19 @@ void vprint(const char *fmt, va_list argp) {
 }
 
 #ifdef DO_DEBUG_UART
+#ifndef UART_PORT
 #define UART_PORT HAL_UART_PORT_0
+#endif
+
+#ifdef POWER_SAVING
+static void DebugUARTCallback(uint8 port, uint8 event){
+    if((event & HAL_UART_TX_IDLE)){
+        // Use HAL Task ID
+        osal_pwrmgr_task_state(2, PWRMGR_CONSERVE);
+    }
+}
+#endif
+
 bool DebugInit() {
     halUARTCfg_t halUARTConfig;
     halUARTConfig.configured = TRUE;
@@ -26,7 +39,12 @@ bool DebugInit() {
     halUARTConfig.rx.maxBufSize = 0;
     halUARTConfig.tx.maxBufSize = BUFFLEN;
     halUARTConfig.intEnable = TRUE;
+    
+#ifdef POWER_SAVING
+    halUARTConfig.callBackFunc = DebugUARTCallback;
+#else
     halUARTConfig.callBackFunc = NULL;
+#endif
     HalUARTInit();
     if (HalUARTOpen(UART_PORT, &halUARTConfig) == HAL_UART_SUCCESS) {
         LREPMaster("Initialized debug module \r\n");
@@ -39,6 +57,9 @@ void LREPMaster(uint8 *data) {
     if (data == NULL) {
         return;
     }
+#ifdef POWER_SAVING
+    osal_pwrmgr_task_state(2, PWRMGR_HOLD);
+#endif
     HalUARTWrite(UART_PORT, data, osal_strlen((char *)data));
 }
 

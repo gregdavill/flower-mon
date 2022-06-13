@@ -175,7 +175,7 @@ static int16 ds18b20_convertTemperature(uint8 temp1, uint8 temp2, uint8 resoluti
     return (int16)(temperature * 100);
 }
 
-int16 readTemperature(void) {
+int16 readTemperatureDS18B20(void) {
 
     uint8 temp1, temp2, retry_count = DS18B20_RETRY_COUNT;
     ds18b20_setResolution(DS18B20_RESOLUTION);
