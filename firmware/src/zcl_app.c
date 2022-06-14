@@ -100,7 +100,7 @@ static void zclApp_EnableSensorPWR(void){
 
 static void zclApp_DisableSensorPWR(void){
     LREP("Powering Down Sensors \r\n");
-    P1SEL  &= ~0x80;                    // Disable Rx on P1.
+    P1SEL  &= ~BV(7);                    // Disable Rx on P1.
     P1DIR |= BV(0) | BV(1) | BV(2) | BV(3) | BV(5) | BV(6) | BV(7);
     P1 &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(5) | BV(6) | BV(7));
     P1INP &= ~(BV(0) | BV(1) | BV(2) | BV(3) | BV(5) | BV(6) | BV(7));
@@ -224,8 +224,8 @@ static void zclApp_HandleKeys(byte portAndAction, byte keyCode) {
 }
 static void zclApp_InitPWM(void) {
     PERCFG &= ~(0x20);  // Select Timer 3 Alternative 1 location
-    //P2SEL |= 0x20;
-    //P2DIR |= 0xC0;   // Give priority to Timer 1 channel2-3
+    P2SEL |= 0x20;
+    P2DIR |= 0xC0;   // Give priority to Timer 1 channel2-3
     P1SEL |= BV(4);  // Set P1_4 to peripheral, Timer 1,channel 2
     P1DIR |= BV(4);
 
