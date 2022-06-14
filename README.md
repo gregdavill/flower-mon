@@ -8,6 +8,5 @@ Capacitance sensor soil moisture sensor based on the CC2530 SoC.
 Designed to communicate over Zigbee to a coordinator.
 Powered from a CR2032, optional humidity, and temperature sensors.
 
-## Renders
-![render_front](docs/img/flower_v2.1_01.png) 
-![render_back](docs/img/flower_v2.1_02.png) 
+## Photo
+![Photo](docs/img/flower_v2.1_pink.jpg) 
