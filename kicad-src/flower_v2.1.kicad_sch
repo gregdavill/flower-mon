@@ -7,7 +7,7 @@
   (title_block
     (title "flower mon")
     (date "2022-05-24")
-    (rev "r2.1")
+    (rev "r2.1a")
     (company "Greg Davill <greg.davill@gmail.com>")
     (comment 2 "OSHW: GPL-3.0")
     (comment 3 "https://github.com/gregdavill/flower-mon")
@@ -1284,16 +1284,12 @@
           (name "CE" (effects (font (size 1.27 1.27))))
           (number "1" (effects (font (size 1.27 1.27))))
         )
-        (pin power_in line (at -2.54 7.62 270) (length 2.54)
-          (name "VCC" (effects (font (size 1.27 1.27))))
-          (number "2" (effects (font (size 1.27 1.27))))
-        )
         (pin power_in line (at -2.54 -7.62 90) (length 2.54)
           (name "GND" (effects (font (size 1.27 1.27))))
-          (number "3" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
         )
-        (pin no_connect line (at -7.62 0 0) (length 2.54) hide
-          (name "NC" (effects (font (size 1.27 1.27))))
+        (pin power_in line (at -2.54 7.62 270) (length 2.54)
+          (name "VCC" (effects (font (size 1.27 1.27))))
           (number "3" (effects (font (size 1.27 1.27))))
         )
         (pin no_connect line (at -7.62 -2.54 0) (length 2.54) hide
@@ -1403,6 +1399,7 @@
       )
     )
   )
+
 
   (junction (at 88.9 48.26) (diameter 0) (color 0 0 0 0)
     (uuid 280b58a5-a2c4-4742-97ea-6adb787e4167)
@@ -2567,8 +2564,7 @@
     )
     (pin "1" (uuid 1a91996b-fa54-46c5-b977-4da2d339645a))
     (pin "2" (uuid fe9de86c-3de7-4155-b152-03a7a19991d6))
-    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68b))
-    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68b))
+    (pin "3" (uuid 2564f05e-6302-497c-8378-a5d534cad68d))
     (pin "4" (uuid ad9c6fdd-a14e-421a-b313-51e2ab0bdf72))
     (pin "5" (uuid d8623b90-5df2-4e9b-90e7-62c11b30e5ed))
     (pin "6" (uuid fb34b607-6107-4290-807b-4f14299be431))
